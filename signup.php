@@ -223,7 +223,9 @@ if (isset($_POST['submit'])) {
       class="md:flex md:items-center md:justify-center w-full sm:w-auto md:h-full xl:w-2/5 p-8 md:p-10 lg:p-14 sm:rounded-lg md:rounded-none bg-white">
       <div class="max-w-md w-full space-y-8">
         <div class="text-center">
-          <h2 class="mt-6 text-3xl font-bold text-gray-900">Welcome!</h2>
+          <h2
+            class="mt-6 text-3xl text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-bold text-gray-900">
+            Welcome!</h2>
           <p class="mt-2 text-sm text-gray-500">Create new account</p>
 
         </div>
@@ -356,7 +358,7 @@ if (isset($_POST['submit'])) {
           <div>
 
             <button type="submit" name="submit"
-              class="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600 hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500">
+              class="w-full flex justify-center bg-indigo-500 hover:bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 text-gray-100 p-4 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500">
               Create account
             </button>
 
