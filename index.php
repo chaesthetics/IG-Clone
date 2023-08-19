@@ -43,7 +43,7 @@ $uemail = $row['iUserEmail'];
   <title>ツイッター</title>
 </head>
 
-<body class="text-gray-900 dark:text-white bg-white dark:bg-[#28282B]">
+<body class="text-gray-900 dark:text-white bg-gray-100 dark:bg-[#28282B]">
   <div class="p-relative h-screen">
     <div class="flex justify-center">
       <header class="py-4">
@@ -51,7 +51,8 @@ $uemail = $row['iUserEmail'];
         <div class="w-[300px] bg-indigo-700">
           <div class="w-[300px] overflow-y-auto fixed h-screen">
             <!--Logo-->
-            <a class="font-bold ml-6" href="#">ツイッター</a>
+            <a class=" ml-6" href="#"><span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-extrabold text-2xl">ツイッター</span></a>
             <!--Nav-->
             <ul class="space-y-2 my-5">
               <li>
@@ -107,7 +108,7 @@ $uemail = $row['iUserEmail'];
               </li>
             </ul>
             <div class="w-[300px] rounded-2xl text-base text-left z-10 hidden" id="dropdown">
-              <ul class="absolute bottom-full mb-16 bg-white dark:bg-[#28282B] rounded-2xl shadow-lg">
+              <ul class="absolute bottom-full mb-16 bg-white dark:bg-gray-700 rounded-2xl shadow-lg">
                 <li
                   class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200">
                   1
@@ -161,13 +162,14 @@ $uemail = $row['iUserEmail'];
               </ul>
             </div>
             <button
-              class="w-[300px] py-3 px-6 rounded-full text-base transform hover:-translate-y-1 text-white dark:text-gray-900 bg-indigo-500 hover:bg-indigo-700 duration-200 font-bold">
+              class="w-[300px] py-3 px-6 rounded-full text-base transform hover:-translate-y-1 text-white dark:text-gray-900 bg-indigo-500 hover:bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 duration-200 font-bold">
               ツイッター
             </button>
 
             <!--User Menu-->
             <div class="absolute" style="bottom: 2rem">
-              <div class="flex-shrink-0 flex hover:bg-indigo-800 rounded-full px-6 py-3 mt-12 mr-2">
+              <div
+                class="flex-shrink-0 flex hover:bg-gray-200 dark:hover:bg-gray-900 rounded-full px-6 py-3 mt-12 mr-2">
                 <a href="#" class="flex-shrink-0 group block">
                   <div class="flex items-center">
                     <div>
@@ -186,7 +188,7 @@ $uemail = $row['iUserEmail'];
                         ?>
                       </p>
                       <p
-                        class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                        class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-500 transition ease-in-out duration-150">
                         @<?php echo $_SESSION['iUserEmail']; ?>
                       </p>
                     </div>
@@ -230,7 +232,7 @@ $uemail = $row['iUserEmail'];
                     </div>
                   </div>
 
-                  <hr class="border-1 ml-16 mr-2 border-gray-900 dark:border-gray-700" />
+                  <hr class="border ml-16 mr-2 border-gray-900 dark:border-gray-700" />
 
                   <!-- Buttons for Create new post -->
                   <div class="flex justify-between">
@@ -250,7 +252,7 @@ $uemail = $row['iUserEmail'];
 
                           <div class="flex text-center p-1 my-2 order-last justify-end">
                             <button
-                              class="text-white dark:text-gray-900 bg-indigo-500 hover:bg-indigo-700 font-bold py-2 px-8 rounded-full"
+                              class="text-white dark:text-gray-900 bg-indigo-500 hover:bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-bold py-2 px-8 rounded-full"
                               name="save">
                               ツイッター
                             </button>
@@ -262,7 +264,7 @@ $uemail = $row['iUserEmail'];
                 </form>
 
                 <!--End Buttons for Create new post-->
-                <hr class="border-4 border-gray-900 dark:border-gray-700" />
+                <hr class="border-gray-900 dark:border-gray-700" />
               </aside>
               <!--List of post-->
               <?php
@@ -276,7 +278,7 @@ $uemail = $row['iUserEmail'];
 
                   <!--Post-->
                   <li>
-                    <article class="hover:bg-gray-200 dark:hover:bg-indigo-800 transition duration-350 ease-in-out">
+                    <article class="hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
                       <div class="flex flex-shrink-0 p-4 pb-0">
                         <a href="#" class="flex-shrink-0 group block">
                           <div class="flex items-center">
@@ -294,18 +296,19 @@ $uemail = $row['iUserEmail'];
                                 //   echo $row['ifirstname'] . ' ' . $row['ilastname']; // Display username for other users' posts
                                 //   $isCurrentUserPost = false;
                                 // }
-                                
+                              
                                 $sql = "SELECT * FROM users WHERE user_id = $userID";
                                 $result = mysqli_query($conn, $sql) or die("query unsuccessful");
-                                if(mysqli_num_rows($result)>0){
-                                  while($row= mysqli_fetch_assoc($result)){
-                                  echo $row['ifirstname'].' '.$row['ilastname']
-                                ?>
-                                
-                                <span
-                                  class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
-                                  @ 
-                                  <?php echo $row['iUserEmail']; ?> . <?php }}?>
+                                if (mysqli_num_rows($result) > 0) {
+                                  while ($row = mysqli_fetch_assoc($result)) {
+                                    echo $row['ifirstname'] . ' ' . $row['ilastname']
+                                      ?>
+
+                                    <span
+                                      class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                                      @
+                                      <?php echo $row['iUserEmail']; ?> . <?php }
+                                } ?>
                                   <?php
                                   $postCreated = strtotime($fetch['post_created']); // Convert to timestamp
                                   echo date('F j, Y', $postCreated); // Display in desired format 
@@ -317,27 +320,26 @@ $uemail = $row['iUserEmail'];
                                 </span>
                               </p>
                             </div>
-                            
+
                           </div>
                         </a>
                       </div>
 
                       <div class="pl-16 overflow-none">
-                        <p class="text-base width-auto font-medium text-gray-900 dark:text-white flex-shrink mx-2 fit-content break-words">
+                        <p
+                          class="text-base width-auto font-medium text-gray-900 dark:text-white flex-shrink mx-2 fit-content break-words">
                           <?php echo $fetch['text_post'] ?>
                         </p>
-                        <?php 
-                        if($fetch['image_post']){
-                        ?>
-                        <div id="uploaded_image" class="md:flex-shrink pr-6 pt-3">
-                          <div class="bg-cover bg-no-repeat bg-center rounded-lg w-full h-64" style="
-                              height: 300px;
-                              background-image: url(<?php echo $fetch['image_post'] ?>);
-                            ">
-                            <img class="opacity-100 w-full h-full" src="<?php echo $fetch['image_post'] ?>" alt="" />
+                        <?php
+                        if ($fetch['image_post']) {
+                          ?>
+                          <div id="uploaded_image" class="md:flex-shrink pr-6 pt-3">
+                            <div>
+                              <img class="bg-cover bg-no-repeat bg-center rounded-lg opacity-100 w-full h-full"
+                                src="<?php echo $fetch['image_post'] ?>" alt="" />
+                            </div>
                           </div>
-                        </div>
-                          <?php }?>
+                        <?php } ?>
                         <div class="flex items-center py-4">
                           <?php if ($isCurrentUserPost) { ?>
                             <!-- Display user-specific buttons for their own posts -->
@@ -423,14 +425,15 @@ $uemail = $row['iUserEmail'];
                       </span>
                     </button>
                     <input type="search" name="search" placeholder="Search Twitter"
-                      class="bg-gray-50 dark:bg-gray-700 h-10 px-10 pr-5 ml-1 w-full rounded-full text-sm focus:outline-none bg-purple-white shadow border-0" />
+                      class="bg-gray-200 dark:bg-gray-700 h-10 px-10 pr-5 w-full rounded-full text-sm font-medium dark:text-gray-100 focus:outline-none bg-purple-white shadow border-0" />
                   </div>
                   <!--Top post-->
-                  <div class="max-w-md rounded-lg bg-dim-700 overflow-hidden shadow-lg m-4">
+                  <div
+                    class="max-w-md rounded-lg bg-dim-700 overflow-hidden shadow-lg m-4 bg-gray-200 dark:bg-gray-700">
                     <div class="flex">
                       <div class="flex-1 m-2">
-                        <h2 class="px-4 py-2 text-xl w-48 font-bold">
-                          <?php echo $user_id?>Philippines trends
+                        <h2 class="px-4 py-2 text-xl w-52 font-bold">
+                          Philippines trends
                         </h2>
                       </div>
 
@@ -443,10 +446,8 @@ $uemail = $row['iUserEmail'];
                       </div>
                     </div>
 
-                    <hr class="border-gray-800" />
-
                     <!--First top post-->
-                    <div class="flex">
+                    <div class="flex hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
                       <div class="flex-1">
                         <p class="px-4 ml-2 mt-3 w-48 text-xs text-gray-400">
                           1. Trending
@@ -467,12 +468,10 @@ $uemail = $row['iUserEmail'];
                         </a>
                       </div>
                     </div>
-
-                    <hr class="border-gray-800" />
 
                     <!--Second top post-->
-                    <div class="flex">
-                      <div class="flex-1">
+                    <div class="flex hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
+                      <div class=" flex-1">
                         <p class="px-4 ml-2 mt-3 w-48 text-xs text-gray-400">
                           1. Trending
                         </p>
@@ -492,12 +491,10 @@ $uemail = $row['iUserEmail'];
                         </a>
                       </div>
                     </div>
-
-                    <hr class="border-gray-800" />
 
                     <!--Third top post-->
-                    <div class="flex">
-                      <div class="flex-1">
+                    <div class="flex hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
+                      <div class=" flex-1">
                         <p class="px-4 ml-2 mt-3 w-48 text-xs text-gray-400">
                           1. Trending
                         </p>
@@ -517,12 +514,10 @@ $uemail = $row['iUserEmail'];
                         </a>
                       </div>
                     </div>
-
-                    <hr class="border-gray-800" />
 
                     <!--Fourth top post-->
-                    <div class="flex">
-                      <div class="flex-1">
+                    <div class="flex hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
+                      <div class=" flex-1">
                         <p class="px-4 ml-2 mt-3 w-48 text-xs text-gray-400">
                           1. Trending
                         </p>
@@ -543,19 +538,20 @@ $uemail = $row['iUserEmail'];
                       </div>
                     </div>
 
-                    <hr class="border-gray-800" />
-
                     <!--Show more-->
-                    <div class="flex">
-                      <div class="flex-1 ml-4 p-4">
-                        <a href="" class="font-bold text-indigo-500 hover:text-indigo-800">Show more</a>
+                    <div class="flex hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
+                      <div class=" flex-1 ml-4 p-4">
+                        <a href=""
+                          class="font-bold text-indigo-500 hover:text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200">Show
+                          more</a>
                       </div>
                     </div>
                   </div>
                   <!--End  of top post-->
 
                   <!--User sugggestion to follow-->
-                  <div class="max-w-md rounded-lg bg-dim-700 overflow-hidden shadow-lg m-4">
+                  <div
+                    class="max-w-md rounded-lg bg-dim-700 overflow-hidden shadow-lg m-4 bg-gray-200 dark:bg-gray-700">
                     <div class="flex">
                       <div class="flex-1 m-2">
                         <h2 class="px-4 py-2 text-xl w-48 font-bold">
@@ -564,11 +560,10 @@ $uemail = $row['iUserEmail'];
                       </div>
                     </div>
 
-                    <hr class="border-gray-800" />
-
                     <!--Suggestion 1-->
-                    <div class="flex flex-shrink-0">
-                      <div class="flex-1">
+                    <div
+                      class="flex flex-shrink-0 hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
+                      <div class=" flex-1">
                         <div class="flex items-center w-48">
                           <div class="">
                             <a href="#" class="">
@@ -579,10 +574,10 @@ $uemail = $row['iUserEmail'];
                           <div class="ml-3 mt-3">
 
                             <p class="text-base leading-6 font-medium">
-                              Mommy
+                              <a href="" class="">Mommy</a>
                             </p>
                             <p
-                              class="text-sm leading-5 font-medium text-gray-400 hover:text-indigo-800 transition ease-in-out duration-150">
+                              class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
                               @annabel.lucinda
                             </p>
                             </a>
@@ -592,17 +587,16 @@ $uemail = $row['iUserEmail'];
                       <div class="flex-1 px-4 py-2 m-2">
                         <a href="" class="float-right">
                           <button
-                            class="bg-transparent hover:bg-indigo-800 font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent rounded-full">
+                            class="bg-transparent hover:bg-indigo-800 font-semibold hover:text-white py-3 px-4 rounded-full">
                             Follow
                           </button>
                         </a>
                       </div>
                     </div>
 
-                    <hr class="border-gray-800" />
-
-                    <!--Suggestion 1-->
-                    <div class="flex flex-shrink-0">
+                    <!--Suggestion 2-->
+                    <div
+                      class="flex flex-shrink-0 flex-shrink-0 hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
                       <div class="flex-1">
                         <div class="flex items-center w-48">
                           <div class="">
@@ -627,19 +621,20 @@ $uemail = $row['iUserEmail'];
                       <div class="flex-1 px-4 py-2 m-2">
                         <a href="" class="float-right">
                           <button
-                            class="bg-transparent hover:bg-indigo-800 font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent rounded-full">
+                            class="bg-transparent hover:bg-indigo-800 font-semibold hover:text-white py-3 px-4 rounded-full">
                             Follow
                           </button>
                         </a>
                       </div>
                     </div>
 
-                    <hr class="border-gray-800" />
-
                     <!--Show more-->
-                    <div class="flex">
+                    <div
+                      class="flex flex-shrink-0 hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
                       <div class="flex-1 ml-4 p-4">
-                        <a href="" class="font-bold text-indigo-500 hover:text-indigo-800">Show more</a>
+                        <a href=""
+                          class="font-bold text-indigo-500 hover:text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200">Show
+                          more</a>
                       </div>
                     </div>
                   </div>
