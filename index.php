@@ -21,6 +21,12 @@ $bd = $row['ibirth_day'];
 $by = $row['ibirth_year'];
 $uemail = $row['iUserEmail'];
 
+// Will check if the user is logged in
+if (empty($_SESSION['user_id'])) {
+  header("Location: login.php"); // Redirect user to login page
+  exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -252,7 +258,7 @@ $uemail = $row['iUserEmail'];
 
                           <div class="flex text-center p-1 my-2 order-last justify-end">
                             <button
-                              class="text-white dark:text-gray-900 bg-indigo-500 hover:bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-bold py-2 px-8 rounded-full"
+                              class="text-white dark:text-gray-900 bg-indigo-500 hover:bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-bold py-2 px-8 rounded-full transform hover:-translate-y-1 duration-200"
                               name="save">
                               ツイッター
                             </button>
