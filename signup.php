@@ -2,6 +2,8 @@
 //Create connection 
 include 'config.php';
 
+$promtMessage = '';
+
 //Add User 
 if (isset($_POST['submit'])) {
   if (
@@ -137,40 +139,6 @@ if (isset($_POST['submit'])) {
   $ibirth_year = '';
   $iUserEmail = '';
   $iUserPassword = '';
-
-  $promtMessage = '<div
-  id="alert-5"
-  class="flex items-center p-4 rounded-lg bg-indigo-200 mb-5"
-  role="alert"
->
-  <span class="material-symbols-rounded"> priority_high </span>
-  <div class="ml-3 text-sm font-medium text-indigo-800 ">
-    All information is required
-  </div>
-  <button
-    type="button"
-    class="ml-auto -mx-1.5 -my-1.5 bg-indigo-200 text-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 p-1.5 hover:bg-gray-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800  dark:hover:bg-gray-700 dark:hover:text-white"
-    data-dismiss-target="#alert-5"
-    aria-label="Close"
-  >
-    <span class="sr-only">Dismiss</span>
-    <svg
-      class="w-3 h-3"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 14 14"
-    >
-      <path
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-      />
-    </svg>
-  </button>
-</div>';
 }
 ?>
 
@@ -233,7 +201,9 @@ if (isset($_POST['submit'])) {
         <form class="mt-8 space-y-6" action="signup.php" method="post">
           <input class="form-control" type="hidden" name="remember" />
           <div class="mt-8 content-center">
-            <?php echo $promtMessage ?>
+            <?php if (!empty($promtMessage)): ?>
+              <?php echo $promtMessage ?>
+            <?php endif; ?>
             <label class="ml-3 text-sm font-bold text-gray-700 tracking-wide">First Name</label>
             <label class="ml-[150px] text-sm font-bold text-gray-700 tracking-wide">Last Name</label>
             <div class="flex">
