@@ -167,7 +167,7 @@ if (empty($_SESSION['user_id'])) {
                 </li>
               </ul>
             </div>
-            <button
+            <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button"
               class="w-[300px] py-3 px-6 rounded-full text-base transform hover:-translate-y-1 text-white dark:text-gray-900 bg-indigo-500 hover:bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 duration-200 font-bold">
               ツイッター
             </button>
@@ -218,7 +218,7 @@ if (empty($_SESSION['user_id'])) {
                 </div>
                 <hr class="border-gray-900 dark:border-gray-700" />
                 <!--Create new post-->
-                <form method="POST" action="save.php" enctype="multipart/form-data">
+                <form id="form1" method="POST" action="save.php" enctype="multipart/form-data">
                   <div class="flex">
                     <div class="m-2 w-10 py-1">
                       <img class="inline-block h-10 w-10 rounded-full" src="Images\☆.jpg" alt="#" />
@@ -230,25 +230,23 @@ if (empty($_SESSION['user_id'])) {
                         autocomplete="off" name="text_post" id="" cols="50" rows="2"
                         placeholder="What's happening?"></textarea>
                       <!--Image Prev-->
-                      <div id="image-preview" class="text-center mt-4" style="display: none">
-                        <img id="preview-image"
+                      <div id="image-preview1" class="text-center mt-4" style="display: none">
+                        <img id="preview-image1"
                           class="rounded-lg w-full h-64 mb-2 object-cover border-2 border-indigo-500"
                           alt="Image Preview" />
                       </div>
                     </div>
                   </div>
 
-                  <hr class="border ml-16 mr-2 border-gray-900 dark:border-gray-700" />
-
                   <!-- Buttons for Create new post -->
-                  <div class="flex justify-between">
+                  <div class="flex justify-between border-t border-gray-700">
                     <div class="w-[598px]">
                       <div class="px-2">
                         <div class="flex items-center">
                           <div class="flex-1 text-center p-1 m-2 order-1">
-                            <input id="uploadpost" type="file" class="form-control" name="photo"
-                              onchange="previewFile()" />
-                            <label for="uploadpost" href="#"
+                            <input id="uploadpost1" type="file" class="form-control" name="photo"
+                              onchange="previewFile(0)" />
+                            <label for="uploadpost1" href="#"
                               class="w-10 mt-1 ml-11 group flex items-center text-blue-400 px-2 py-2 text-base leading-6 font-medium rounded-full hover:bg-indigo-700 hover:text-blue-300">
                               <span class="material-symbols-rounded">
                                 photo
@@ -280,6 +278,82 @@ if (empty($_SESSION['user_id'])) {
                 $postID = $fetch['post_id']; // Retrieve the post ID
                 $userID = $fetch['user_id']; // Retrieve the user ID
                 ?>
+
+                <!-- Creat new post modal -->
+                <div id="defaultModal" tabindex="-1" aria-hidden="true"
+                  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(60%-1rem)] max-h-full">
+                  <div class="relative w-full max-w-2xl max-h-full">
+                    <!-- Modal content -->
+                    <div class="relative rounded-lg shadow bg-gray-100 dark:bg-[#28282B]">
+                      <!-- Modal header -->
+                      <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-700">
+                        <h3
+                          class="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-extrabold">
+                          Create new Post
+                        </h3>
+                        <button type="button"
+                          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                          data-modal-hide="defaultModal">
+                          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                          </svg>
+                          <span class="sr-only">Close modal</span>
+                        </button>
+                      </div>
+                      <!-- Modal body -->
+                      <form id="form2" method="POST" action="save.php" enctype="multipart/form-data">
+                        <div class="flex">
+                          <div class="m-2 w-10 py-1">
+                            <img class="inline-block h-10 w-10 rounded-full" src="Images\☆.jpg" alt="#" />
+                          </div>
+                          <!--Text Area-->
+                          <div class="flex-1 px-2 pt-2 mt-2">
+                            <textarea
+                              class="bg-transparent font-medium h-40 text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-white focus:ring-0"
+                              autocomplete="off" name="text_post" id="" cols="50" rows="2"
+                              placeholder="What's happening?"></textarea>
+                            <!--Image Prev-->
+                            <div id="image-preview2" class="text-center mt-4" style="display: none">
+                              <img id="preview-image2"
+                                class="rounded-lg w-full h-64 mb-2 object-cover border-2 border-indigo-500"
+                                alt="Image Preview" />
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Buttons for creat new post modal -->
+                        <div class="flex justify-between border-t dark:border-gray-700">
+                          <div class="w-full">
+                            <div class="px-2">
+                              <div class="flex items-center">
+                                <div class="flex flex-row flex-1 text-center p-1 m-2 order-1 space-y-2">
+                                  <input id="uploadpost2" type="file" class="form-control" name="photo"
+                                    onchange="previewFile(1)" />
+                                  <!-- Button for uplaod image -->
+                                  <label for="uploadpost2" href="#"
+                                    class="w-10 mt-1 ml-2 group flex items-center text-blue-400 px-2 py-2 text-base leading-6 font-medium rounded-full hover:bg-indigo-700 hover:text-blue-300">
+                                    <span class="material-symbols-rounded">
+                                      photo
+                                    </span>
+                                  </label>
+                                </div>
+
+                                <div class="flex text-center p-1 my-2 order-last justify-end">
+                                  <button
+                                    class="text-white dark:text-gray-900 bg-indigo-500 hover:bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-bold py-2 px-8 mr-2 rounded-full transform hover:-translate-y-1 duration-200"
+                                    name="save">
+                                    ツイッター
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
                 <ul class="list-none">
 
                   <!--Post-->
@@ -677,8 +751,31 @@ if (empty($_SESSION['user_id'])) {
     };
   </script>
   <script>
+    // Check if the user preference is stored in Local Storage
+    const storedPreference = localStorage.getItem("darkMode");
+
+    // Set the initial mode based on stored preference or default to system setting
+    if (storedPreference === "dark") {
+      document.querySelector("html").classList.add("dark");
+      document.querySelector("#dark-toggle").checked = true;
+    } else if (storedPreference === "light") {
+      document.querySelector("html").classList.remove("dark");
+      document.querySelector("#dark-toggle").checked = false;
+    } else {
+      const systemPreference = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      if (systemPreference === "dark") {
+        document.querySelector("html").classList.add("dark");
+        document.querySelector("#dark-toggle").checked = true;
+      }
+    }
+
+    // Toggle dark mode and save preference to Local Storage
     function darkModeListener() {
-      document.querySelector("html").classList.toggle("dark");
+      const htmlElement = document.querySelector("html");
+      htmlElement.classList.toggle("dark");
+
+      const modePreference = htmlElement.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("darkMode", modePreference);
     }
 
     document
@@ -687,15 +784,16 @@ if (empty($_SESSION['user_id'])) {
   </script>
   <!--End Darkmode-->
 
-  <!--Scroll-->
+  <!--Emportant-->
   <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.js"></script>
+
   <!--Image preview-->
   <script>
-    function previewFile() {
-      const fileInput = document.getElementById("uploadpost");
-      const previewImage = document.getElementById("preview-image");
-      const imagePreviewDiv = document.getElementById("image-preview");
+    function previewFile(formIndex) {
+      const fileInput = document.getElementById(`uploadpost${formIndex}`);
+      const previewImage = document.getElementById(`preview-image${formIndex}`);
+      const imagePreviewDiv = document.getElementById(`image-preview${formIndex}`);
 
       if (fileInput.files && fileInput.files[0]) {
         const reader = new FileReader();
