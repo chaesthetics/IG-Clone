@@ -226,11 +226,11 @@ if (empty($_SESSION['user_id'])) {
                     <!--Text Area-->
                     <div class="flex-1 px-2 pt-2 mt-2">
                       <textarea
-                        class="bg-transparent font-medium text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-white focus:ring-0"
+                        class="bg-transparent font-medium text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-white focus:ring-0 h-auto"
                         autocomplete="off" name="text_post" id="" cols="50" rows="2"
                         placeholder="What's happening?"></textarea>
                       <!--Image Prev-->
-                      <div id="image-preview1" class="text-center mt-4" style="display: none">
+                      <div id="image-preview1" class="text-center mt-4 mr-4" style="display: none">
                         <img id="preview-image1"
                           class="rounded-lg w-full h-64 mb-2 object-cover border-2 border-indigo-500"
                           alt="Image Preview" />
@@ -245,7 +245,7 @@ if (empty($_SESSION['user_id'])) {
                         <div class="flex items-center">
                           <div class="flex-1 text-center p-1 m-2 order-1">
                             <input id="uploadpost1" type="file" class="form-control" name="photo"
-                              onchange="previewFile(0)" />
+                              onchange="previewFile(1)" />
                             <label for="uploadpost1" href="#"
                               class="w-10 mt-1 ml-11 group flex items-center text-blue-400 px-2 py-2 text-base leading-6 font-medium rounded-full hover:bg-indigo-700 hover:text-blue-300">
                               <span class="material-symbols-rounded">
@@ -281,7 +281,7 @@ if (empty($_SESSION['user_id'])) {
 
                 <!-- Creat new post modal -->
                 <div id="defaultModal" tabindex="-1" aria-hidden="true"
-                  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(60%-1rem)] max-h-full">
+                  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:-inset-[55px] h-[calc(100%-1rem)] max-h-full">
                   <div class="relative w-full max-w-2xl max-h-full">
                     <!-- Modal content -->
                     <div class="relative rounded-lg shadow bg-gray-100 dark:bg-[#28282B]">
@@ -311,13 +311,13 @@ if (empty($_SESSION['user_id'])) {
                           <!--Text Area-->
                           <div class="flex-1 px-2 pt-2 mt-2">
                             <textarea
-                              class="bg-transparent font-medium h-40 text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-white focus:ring-0"
-                              autocomplete="off" name="text_post" id="" cols="50" rows="2"
+                              class="bg-transparent font-medium text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-white focus:ring-0 h-50"
+                              autocomplete="off" name="text_post" id="textArea" cols="50" rows="3"
                               placeholder="What's happening?"></textarea>
                             <!--Image Prev-->
-                            <div id="image-preview2" class="text-center mt-4" style="display: none">
+                            <div id="image-preview2" class="text-center mt-4 mr-4" style="display: none">
                               <img id="preview-image2"
-                                class="rounded-lg w-full h-64 mb-2 object-cover border-2 border-indigo-500"
+                                class="rounded-lg w-full h-72 mb-2 object-cover border-2 border-indigo-500"
                                 alt="Image Preview" />
                             </div>
                           </div>
@@ -329,7 +329,7 @@ if (empty($_SESSION['user_id'])) {
                               <div class="flex items-center">
                                 <div class="flex flex-row flex-1 text-center p-1 m-2 order-1 space-y-2">
                                   <input id="uploadpost2" type="file" class="form-control" name="photo"
-                                    onchange="previewFile(1)" />
+                                    onchange="previewFile(2)" />
                                   <!-- Button for uplaod image -->
                                   <label for="uploadpost2" href="#"
                                     class="w-10 mt-1 ml-2 group flex items-center text-blue-400 px-2 py-2 text-base leading-6 font-medium rounded-full hover:bg-indigo-700 hover:text-blue-300">
@@ -784,7 +784,7 @@ if (empty($_SESSION['user_id'])) {
   </script>
   <!--End Darkmode-->
 
-  <!--Emportant-->
+  <!--Important-->
   <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.js"></script>
 
@@ -795,7 +795,7 @@ if (empty($_SESSION['user_id'])) {
       const previewImage = document.getElementById(`preview-image${formIndex}`);
       const imagePreviewDiv = document.getElementById(`image-preview${formIndex}`);
 
-      if (fileInput.files && fileInput.files[0]) {
+      if (fileInput && previewImage && imagePreviewDiv && fileInput.files && fileInput.files[0]) {
         const reader = new FileReader();
 
         reader.onload = function (e) {
