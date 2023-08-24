@@ -95,6 +95,12 @@ if (isset($_POST['submit'])) {
     } else {
       $sql = "INSERT INTO users(ifirstname, ilastname, ibirth_month, ibirth_day, ibirth_year, iUserEmail, iUserPassword) VALUES('$ifirstname', '$ilastname', '$ibirth_month', '$ibirth_day', '$ibirth_year', '$iUserEmail', '$iUserPassword')";
       $result = mysqli_query($conn, $sql) or die("query unsuccessful");
+
+      // Set a default profile picture for the new user
+      $userId = mysqli_insert_id($conn); // Get the ID of the newly inserted user
+      $defaultProfilePicture = 'Images/user.jpg';
+      $updateProfilePictureQuery = "UPDATE users SET profile_picture = '$defaultProfilePicture' WHERE id = $userId";
+      mysqli_query($conn, $updateProfilePictureQuery);
     }
   } else {
     $promtMessage = '<div

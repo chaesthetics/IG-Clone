@@ -178,8 +178,31 @@ if (empty($_SESSION['user_id'])) {
                 class="flex-shrink-0 flex hover:bg-gray-200 dark:hover:bg-gray-900 rounded-full px-6 py-3 mt-12 mr-2">
                 <a href="#" class="flex-shrink-0 group block">
                   <div class="flex items-center">
+
+                    <?php
+
+                    if (isset($_SESSION['userEmail'])) {
+                      $userEmail = $_SESSION['userEmail'];
+
+                      // Query the database to get the user's profile picture
+                      $getProfilePictureQuery = "SELECT profile_picture FROM users WHERE iUserEmail = '$userEmail'";
+                      $profilePictureResult = mysqli_query($conn, $getProfilePictureQuery);
+
+                      if ($profilePictureResult && mysqli_num_rows($profilePictureResult) > 0) {
+                        $profilePictureData = mysqli_fetch_assoc($profilePictureResult);
+                        $profilePicture = $profilePictureData['profile_picture'];
+                      } else {
+                        // User not found or no profile picture set, show the default picture
+                        $profilePicture = 'Images/user.jpg';
+                      }
+                    } else {
+                      // User not logged in, show the default picture
+                      $profilePicture = 'Images/user.jpg';
+                    }
+                    ?>
+
                     <div>
-                      <img class="inline-block h-10 w-10 rounded-full" src="Images\☆.jpg" alt="#" />
+                      <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>" alt="#" />
                     </div>
                     <div class="ml-3">
                       <p class="text-base leading-6 font-medium">
@@ -221,7 +244,7 @@ if (empty($_SESSION['user_id'])) {
                 <form id="form1" method="POST" action="save.php" enctype="multipart/form-data">
                   <div class="flex">
                     <div class="m-2 w-10 py-1">
-                      <img class="inline-block h-10 w-10 rounded-full" src="Images\☆.jpg" alt="#" />
+                      <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>" alt="#" />
                     </div>
                     <!--Text Area-->
                     <div class="flex-1 px-2 pt-2 mt-2">
@@ -306,7 +329,8 @@ if (empty($_SESSION['user_id'])) {
                       <form id="form2" method="POST" action="save.php" enctype="multipart/form-data">
                         <div class="flex">
                           <div class="m-2 w-10 py-1">
-                            <img class="inline-block h-10 w-10 rounded-full" src="Images\☆.jpg" alt="#" />
+                            <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>"
+                              alt="#" />
                           </div>
                           <!--Text Area-->
                           <div class="flex-1 px-2 pt-2 mt-2">
@@ -363,7 +387,8 @@ if (empty($_SESSION['user_id'])) {
                         <a href="#" class="flex-shrink-0 group block">
                           <div class="flex items-center">
                             <div>
-                              <img class="inline-block h-10 w-10 rounded-full" src="Images\☆.jpg" alt="" />
+                              <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>"
+                                alt="" />
                             </div>
                             <div class="ml-3">
                               <p class="text-base leading-6 font-medium text-gray-900 dark:text-white">
