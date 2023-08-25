@@ -96,7 +96,7 @@ if (empty($_SESSION['user_id'])) {
                     list_alt </span>lists</a>
               </li>
               <li>
-                <a href=""
+                <a href="profile.php"
                   class="flex py-2 px-6 rounded-full text-base font-semibold transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-white"><span
                     class="material-symbols-rounded mr-2"> person </span>Profile</a>
               </li>
@@ -524,7 +524,7 @@ if (empty($_SESSION['user_id'])) {
             <aside class="w-2/5 h-12 position-relative">
               <div class="max-width-[400px]">
                 <div class="overflow-y-auto fixed h-screen">
-                  <div class="relative text-gray-900 dark:text-white w-100 p-5">
+                  <div class="relative text-gray-900 dark:text-white w-100 p-5 drop-shadow-lg">
                     <button type="submit" class="absolute ml-4 mt-3 mr-4">
                       <span class="absolute material-symbols-rounded -mt-1">search
                       </span>
@@ -534,7 +534,7 @@ if (empty($_SESSION['user_id'])) {
                   </div>
                   <!--Top post-->
                   <div
-                    class="max-w-md rounded-lg bg-dim-700 overflow-hidden shadow-lg m-4 bg-gray-200 dark:bg-gray-700">
+                    class="max-w-md rounded-lg bg-dim-700 overflow-hidden drop-shadow-lg m-4 bg-gray-200 dark:bg-gray-700">
                     <div class="flex">
                       <div class="flex-1 m-2">
                         <h2 class="px-4 py-2 text-xl w-52 font-bold">
@@ -656,7 +656,7 @@ if (empty($_SESSION['user_id'])) {
 
                   <!--User sugggestion to follow-->
                   <div
-                    class="max-w-md rounded-lg bg-dim-700 overflow-hidden shadow-lg m-4 bg-gray-200 dark:bg-gray-700">
+                    class="max-w-md rounded-lg bg-dim-700 overflow-hidden drop-shadow-lg m-4 bg-gray-200 dark:bg-gray-700">
                     <div class="flex">
                       <div class="flex-1 m-2">
                         <h2 class="px-4 py-2 text-xl w-48 font-bold">
