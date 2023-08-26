@@ -49,7 +49,7 @@ if (empty($_SESSION['user_id'])) {
   <title>ツイッター</title>
 </head>
 
-<body class="text-gray-900 dark:text-white bg-gray-100 dark:bg-[#28282B]">
+<body class="text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-[#28282B]">
   <div class="p-relative h-screen">
     <div class="flex justify-center">
       <header class="py-4">
@@ -57,12 +57,12 @@ if (empty($_SESSION['user_id'])) {
         <div class="w-[300px] bg-indigo-700">
           <div class="w-[300px] overflow-y-auto fixed h-screen">
             <!--Logo-->
-            <a class=" ml-6" href="#"><span
+            <a class=" ml-6" href="index.php"><span
                 class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-extrabold text-2xl">ツイッター</span></a>
             <!--Nav-->
             <ul class="space-y-2 my-5">
               <li>
-                <a href=""
+                <a href="index.php"
                   class="flex py-2 px-6 rounded-full text-base font-semibold transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-white"><span
                     class="material-symbols-rounded mr-2"> home </span>Home</a>
               </li>
@@ -96,7 +96,7 @@ if (empty($_SESSION['user_id'])) {
                     list_alt </span>lists</a>
               </li>
               <li>
-                <a href=""
+                <a href="profile.php"
                   class="flex py-2 px-6 rounded-full text-base font-semibold transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-white"><span
                     class="material-symbols-rounded mr-2"> person </span>Profile</a>
               </li>
@@ -178,8 +178,31 @@ if (empty($_SESSION['user_id'])) {
                 class="flex-shrink-0 flex hover:bg-gray-200 dark:hover:bg-gray-900 rounded-full px-6 py-3 mt-12 mr-2">
                 <a href="#" class="flex-shrink-0 group block">
                   <div class="flex items-center">
+
+                    <?php
+
+                    if (isset($_SESSION['userEmail'])) {
+                      $userEmail = $_SESSION['userEmail'];
+
+                      // Query the database to get the user's profile picture
+                      $getProfilePictureQuery = "SELECT profile_picture FROM users WHERE iUserEmail = '$userEmail'";
+                      $profilePictureResult = mysqli_query($conn, $getProfilePictureQuery);
+
+                      if ($profilePictureResult && mysqli_num_rows($profilePictureResult) > 0) {
+                        $profilePictureData = mysqli_fetch_assoc($profilePictureResult);
+                        $profilePicture = $profilePictureData['profile_picture'];
+                      } else {
+                        // User not found or no profile picture set, show the default picture
+                        $profilePicture = 'Images/user.jpg';
+                      }
+                    } else {
+                      // User not logged in, show the default picture
+                      $profilePicture = 'Images/user.jpg';
+                    }
+                    ?>
+
                     <div>
-                      <img class="inline-block h-10 w-10 rounded-full" src="Images\☆.jpg" alt="#" />
+                      <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>" alt="#" />
                     </div>
                     <div class="ml-3">
                       <p class="text-base leading-6 font-medium">
@@ -207,9 +230,9 @@ if (empty($_SESSION['user_id'])) {
       </header>
       <!--Contents in the center-->
       <aside>
-        <main>
-          <div class="flex w-[1000px] mx-2">
-            <section class="max-w-2xl w-3/5 border border-y-0 border-gray-900 dark:border-gray-700">
+        <main role="main">
+          <div class="flex w-[1010px] mx-2">
+            <section class="max-w-2xl w-5/6 border border-y-0 border-gray-900 dark:border-gray-700">
               <aside>
                 <div class="flex">
                   <div class="flex-1 mx-2">
@@ -221,7 +244,7 @@ if (empty($_SESSION['user_id'])) {
                 <form id="form1" method="POST" action="save.php" enctype="multipart/form-data">
                   <div class="flex">
                     <div class="m-2 w-10 py-1">
-                      <img class="inline-block h-10 w-10 rounded-full" src="Images\☆.jpg" alt="#" />
+                      <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>" alt="#" />
                     </div>
                     <!--Text Area-->
                     <div class="flex-1 px-2 pt-2 mt-2">
@@ -240,7 +263,7 @@ if (empty($_SESSION['user_id'])) {
 
                   <!-- Buttons for Create new post -->
                   <div class="flex justify-between border-t border-gray-700">
-                    <div class="w-[598px]">
+                    <div class="w-full">
                       <div class="px-2">
                         <div class="flex items-center">
                           <div class="flex-1 text-center p-1 m-2 order-1">
@@ -281,7 +304,7 @@ if (empty($_SESSION['user_id'])) {
 
                 <!-- Creat new post modal -->
                 <div id="defaultModal" tabindex="-1" aria-hidden="true"
-                  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:-inset-[55px] h-[calc(100%-1rem)] max-h-full">
+                  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:-inset-[18px] h-[calc(100%-1rem)] max-h-full">
                   <div class="relative w-full max-w-2xl max-h-full">
                     <!-- Modal content -->
                     <div class="relative rounded-lg shadow bg-gray-100 dark:bg-[#28282B]">
@@ -306,7 +329,8 @@ if (empty($_SESSION['user_id'])) {
                       <form id="form2" method="POST" action="save.php" enctype="multipart/form-data">
                         <div class="flex">
                           <div class="m-2 w-10 py-1">
-                            <img class="inline-block h-10 w-10 rounded-full" src="Images\☆.jpg" alt="#" />
+                            <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>"
+                              alt="#" />
                           </div>
                           <!--Text Area-->
                           <div class="flex-1 px-2 pt-2 mt-2">
@@ -363,7 +387,8 @@ if (empty($_SESSION['user_id'])) {
                         <a href="#" class="flex-shrink-0 group block">
                           <div class="flex items-center">
                             <div>
-                              <img class="inline-block h-10 w-10 rounded-full" src="Images\☆.jpg" alt="" />
+                              <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>"
+                                alt="" />
                             </div>
                             <div class="ml-3">
                               <p class="text-base leading-6 font-medium text-gray-900 dark:text-white">
@@ -484,7 +509,7 @@ if (empty($_SESSION['user_id'])) {
 
 
                       </div>
-                      <hr class="border-gray-900 dark:border-gray-400" />
+                      <hr class="border-gray-900 dark:border-gray-700" />
                     </article>
                   </li>
                   <!--End of Post-->
@@ -499,7 +524,7 @@ if (empty($_SESSION['user_id'])) {
             <aside class="w-2/5 h-12 position-relative">
               <div class="max-width-[400px]">
                 <div class="overflow-y-auto fixed h-screen">
-                  <div class="relative text-gray-900 dark:text-white w-100 p-5">
+                  <div class="relative text-gray-900 dark:text-white w-100 p-5 drop-shadow-lg">
                     <button type="submit" class="absolute ml-4 mt-3 mr-4">
                       <span class="absolute material-symbols-rounded -mt-1">search
                       </span>
@@ -509,7 +534,7 @@ if (empty($_SESSION['user_id'])) {
                   </div>
                   <!--Top post-->
                   <div
-                    class="max-w-md rounded-lg bg-dim-700 overflow-hidden shadow-lg m-4 bg-gray-200 dark:bg-gray-700">
+                    class="max-w-md rounded-lg bg-dim-700 overflow-hidden drop-shadow-lg m-4 bg-gray-200 dark:bg-gray-700">
                     <div class="flex">
                       <div class="flex-1 m-2">
                         <h2 class="px-4 py-2 text-xl w-52 font-bold">
@@ -631,7 +656,7 @@ if (empty($_SESSION['user_id'])) {
 
                   <!--User sugggestion to follow-->
                   <div
-                    class="max-w-md rounded-lg bg-dim-700 overflow-hidden shadow-lg m-4 bg-gray-200 dark:bg-gray-700">
+                    class="max-w-md rounded-lg bg-dim-700 overflow-hidden drop-shadow-lg m-4 bg-gray-200 dark:bg-gray-700">
                     <div class="flex">
                       <div class="flex-1 m-2">
                         <h2 class="px-4 py-2 text-xl w-48 font-bold">
