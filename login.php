@@ -24,6 +24,7 @@ if (isset($_POST['signin'])) {
     $_SESSION["ibirth_day"] = $row['ibirth_day'];
     $_SESSION["ibirth_year"] = $row['ibirth_year'];
     $_SESSION["date_created"] = $row['date_created'];
+    $_SESSION["profile_picture"] = $row['profile_picture'];
 
   } else {
     $promtMessage = '<div

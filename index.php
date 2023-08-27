@@ -57,12 +57,12 @@ if (empty($_SESSION['user_id'])) {
         <div class="w-[300px] bg-indigo-700">
           <div class="w-[300px] overflow-y-auto fixed h-screen">
             <!--Logo-->
-            <a class=" ml-6" href="index.php"><span
+            <a class=" ml-6" href="/index.php"><span
                 class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-extrabold text-2xl">ツイッター</span></a>
             <!--Nav-->
             <ul class="space-y-2 my-5">
               <li>
-                <a href="index.php"
+                <a href="/index.php"
                   class="flex py-2 px-6 rounded-full text-base font-semibold transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-white"><span
                     class="material-symbols-rounded mr-2"> home </span>Home</a>
               </li>
@@ -96,19 +96,19 @@ if (empty($_SESSION['user_id'])) {
                     list_alt </span>lists</a>
               </li>
               <li>
-                <a href="profile.php"
+                <a href="/profile.php"
                   class="flex py-2 px-6 rounded-full text-base font-semibold transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-white"><span
                     class="material-symbols-rounded mr-2"> person </span>Profile</a>
               </li>
               <li>
                 <div class="relative">
                   <button
-                    class="w-[300px] py-2 px-6 mr-2 rounded-full text-base text-left transform hover:-translate-y-1 hover:bg-indigo-700 duration-200"
+                    class="w-[300px] py-2 px-6 mr-2 rounded-full text-base text-left transform hover:-translate-y-1 hover:bg-indigo-700 hover:text-gray-100 duration-200 "
                     id="morebutton" data-dropdown-toggle="dropdown">
                     <span class="material-symbols-rounded absolute">
                       more_horiz
                     </span>
-                    <span class="ml-8">More</span>
+                    <span class="ml-8 font-semibold">More</span>
                   </button>
                 </div>
               </li>
@@ -116,27 +116,27 @@ if (empty($_SESSION['user_id'])) {
             <div class="w-[300px] rounded-2xl text-base text-left z-10 hidden" id="dropdown">
               <ul class="absolute bottom-full mb-16 bg-white dark:bg-gray-700 rounded-2xl shadow-lg">
                 <li
-                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200">
+                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-gray-100">
                   1
                 </li>
                 <li
-                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200">
+                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-gray-100">
                   1
                 </li>
                 <li
-                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200">
+                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-gray-100">
                   1
                 </li>
                 <li
-                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200">
+                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-gray-100">
                   1
                 </li>
                 <li
-                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200">
+                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-gray-100">
                   1
                 </li>
                 <li
-                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200">
+                  class="w-[250px] py-2 px-4 mx-2 my-1 rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-gray-100">
                   1
                 </li>
                 <li
@@ -156,7 +156,19 @@ if (empty($_SESSION['user_id'])) {
                     </label>
                   </div>
                 </li>
-                <li>
+
+              </ul>
+            </div>
+
+            <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button"
+              class="w-[300px] py-3 px-6 rounded-full text-base transform hover:-translate-y-1 text-white dark:text-gray-900 bg-indigo-500 hover:bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 duration-200 font-bold">
+              ツイッター
+            </button>
+
+            <!--Logout Modal-->
+            <div class="w-[300px] rounded-2xl text-base text-left z-10 hidden" id="dropdown_logout">
+              <ul class="absolute bottom-full h-14 mb-24 bg-white dark:bg-gray-700 rounded-2xl shadow-lg">
+                <li class="my-1">
                   <a href="logout.php"><button
                       class="w-[250px] py-2 px-4 mx-2 my-1 text-left rounded-full transform hover:-translate-y-1 hover:bg-indigo-700 duration-200"><span
                         class="absolute material-symbols-rounded">
@@ -167,25 +179,20 @@ if (empty($_SESSION['user_id'])) {
                 </li>
               </ul>
             </div>
-            <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" type="button"
-              class="w-[300px] py-3 px-6 rounded-full text-base transform hover:-translate-y-1 text-white dark:text-gray-900 bg-indigo-500 hover:bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 duration-200 font-bold">
-              ツイッター
-            </button>
 
             <!--User Menu-->
-            <div class="absolute" style="bottom: 2rem">
-              <div
+            <div class="absolute bottom-8">
+              <button id="morebutton" data-dropdown-toggle="dropdown_logout"
                 class="flex-shrink-0 flex hover:bg-gray-200 dark:hover:bg-gray-900 rounded-full px-6 py-3 mt-12 mr-2">
                 <a href="#" class="flex-shrink-0 group block">
                   <div class="flex items-center">
 
                     <?php
-
-                    if (isset($_SESSION['userEmail'])) {
-                      $userEmail = $_SESSION['userEmail'];
+                    if (isset($_SESSION['user_id'])) {
+                      $userId = $_SESSION['user_id'];
 
                       // Query the database to get the user's profile picture
-                      $getProfilePictureQuery = "SELECT profile_picture FROM users WHERE iUserEmail = '$userEmail'";
+                      $getProfilePictureQuery = "SELECT profile_picture FROM users WHERE user_id = '$userId'";
                       $profilePictureResult = mysqli_query($conn, $getProfilePictureQuery);
 
                       if ($profilePictureResult && mysqli_num_rows($profilePictureResult) > 0) {
@@ -204,14 +211,15 @@ if (empty($_SESSION['user_id'])) {
                     <div>
                       <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>" alt="#" />
                     </div>
+
                     <div class="ml-3">
                       <p class="text-base leading-6 font-medium">
                         <?php
                         if (isset($_SESSION['Email']) && $_SESSION['Email'] === $fetch['Email']) {
-                          echo $_SESSION['ifirstname'] . ' ' . $_SESSION['ilastname'];
+                          echo $_SESSION['ifirstname'] . ' ' . $_SESSION['ilastname']; // Display name of the current login user
                           $isCurrentUserPost = true;
                         } else {
-                          echo $row['ifirstname'] . ' ' . $row['ilastname']; // Display username for other users' posts
+                          echo $row['ifirstname'] . ' ' . $row['ilastname']; // Display name for other users' posts
                           $isCurrentUserPost = false;
                         }
                         ?>
@@ -223,7 +231,7 @@ if (empty($_SESSION['user_id'])) {
                     </div>
                   </div>
                 </a>
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -240,12 +248,41 @@ if (empty($_SESSION['user_id'])) {
                   </div>
                 </div>
                 <hr class="border-gray-900 dark:border-gray-700" />
+
                 <!--Create new post-->
                 <form id="form1" method="POST" action="save.php" enctype="multipart/form-data">
                   <div class="flex">
                     <div class="m-2 w-10 py-1">
-                      <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>" alt="#" />
+                      <?php
+                      $defaultProfilePicture = $profilePicture; // Assuming $profilePicture contains the default picture URL
+                      
+                      // Check if the user is logged in
+                      if (isset($_SESSION['user_id'])) {
+                        $loggedInUserId = $_SESSION['user_id']; // Change this to the appropriate session variable for storing user ID
+                      
+                        // Retrieve profile picture and default_profile_picture for the logged-in user
+                        $sql = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $loggedInUserId";
+                        $result = mysqli_query($conn, $sql) or die("query unsuccessful");
+
+                        if (mysqli_num_rows($result) > 0) {
+                          $row = mysqli_fetch_assoc($result);
+                          $profilePictureUrl = $row['profile_picture'];
+                          $isDefaultPicture = $row['default_profile_picture'];
+
+                          if (!$isDefaultPicture && !empty($profilePictureUrl)) {
+                            echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $profilePictureUrl . '" alt="#" />'; // Display default picture or user who is currently logged in
+                          } else {
+                            echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture if user not found
+                          }
+                        } else {
+                          echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture if user not found
+                        }
+                      } else {
+                        echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture for non-logged-in users
+                      }
+                      ?>
                     </div>
+
                     <!--Text Area-->
                     <div class="flex-1 px-2 pt-2 mt-2">
                       <textarea
@@ -293,115 +330,201 @@ if (empty($_SESSION['user_id'])) {
                 <!--End Buttons for Create new post-->
                 <hr class="border-gray-900 dark:border-gray-700" />
               </aside>
-              <!--List of post-->
-              <?php
-              require 'config.php';
-              $query = mysqli_query($conn, "SELECT * FROM `userposts` ORDER BY post_id DESC") or die(mysqli_error());
-              while ($fetch = mysqli_fetch_array($query)) {
-                $postID = $fetch['post_id']; // Retrieve the post ID
-                $userID = $fetch['user_id']; // Retrieve the user ID
-                ?>
 
-                <!-- Creat new post modal -->
-                <div id="defaultModal" tabindex="-1" aria-hidden="true"
-                  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:-inset-[18px] h-[calc(100%-1rem)] max-h-full">
-                  <div class="relative w-full max-w-2xl max-h-full">
-                    <!-- Modal content -->
-                    <div class="relative rounded-lg shadow bg-gray-100 dark:bg-[#28282B]">
-                      <!-- Modal header -->
-                      <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-700">
-                        <h3
-                          class="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-extrabold">
-                          Create new Post
-                        </h3>
-                        <button type="button"
-                          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                          data-modal-hide="defaultModal">
-                          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                          </svg>
-                          <span class="sr-only">Close modal</span>
-                        </button>
-                      </div>
-                      <!-- Modal body -->
-                      <form id="form2" method="POST" action="save.php" enctype="multipart/form-data">
-                        <div class="flex">
-                          <div class="m-2 w-10 py-1">
-                            <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>"
-                              alt="#" />
-                          </div>
-                          <!--Text Area-->
-                          <div class="flex-1 px-2 pt-2 mt-2">
-                            <textarea
-                              class="bg-transparent font-medium text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-white focus:ring-0 h-50"
-                              autocomplete="off" name="text_post" id="textArea" cols="50" rows="3"
-                              placeholder="What's happening?"></textarea>
-                            <!--Image Prev-->
-                            <div id="image-preview2" class="text-center mt-4 mr-4" style="display: none">
-                              <img id="preview-image2"
-                                class="rounded-lg w-full h-72 mb-2 object-cover border-2 border-indigo-500"
-                                alt="Image Preview" />
-                            </div>
+              <!-- Creat new post modal -->
+              <div id="defaultModal" tabindex="-1" aria-hidden="true"
+                class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:-inset-[18px] h-[calc(100%-1rem)] max-h-full">
+                <div class="relative w-full max-w-2xl max-h-full">
+                  <!-- Modal content -->
+                  <div class="relative rounded-lg shadow bg-gray-100 dark:bg-[#28282B]">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-700">
+                      <h3
+                        class="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-extrabold">
+                        Create new Post
+                      </h3>
+                      <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-hide="defaultModal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                          viewBox="0 0 14 14">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                      </button>
+                    </div>
+                    <!-- Modal body -->
+                    <form id="form2" method="POST" action="save.php" enctype="multipart/form-data">
+                      <div class="flex">
+                        <div class="m-2 w-10 py-1">
+                          <?php
+                          $defaultProfilePicture = $profilePicture; // Assuming $profilePicture contains the default picture URL
+                          
+                          // Check if the user is logged in
+                          if (isset($_SESSION['user_id'])) {
+                            $loggedInUserId = $_SESSION['user_id']; // Change this to the appropriate session variable for storing user ID
+                          
+                            // Retrieve profile picture and default_profile_picture for the logged-in user
+                            $sql = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $loggedInUserId";
+                            $result = mysqli_query($conn, $sql) or die("query unsuccessful");
+
+                            if (mysqli_num_rows($result) > 0) {
+                              $row = mysqli_fetch_assoc($result);
+                              $profilePictureUrl = $row['profile_picture'];
+                              $isDefaultPicture = $row['default_profile_picture'];
+
+                              if (!$isDefaultPicture && !empty($profilePictureUrl)) {
+                                $pictureToShow = $profilePictureUrl;
+                              } else {
+                                $pictureToShow = $defaultProfilePicture;
+                              }
+                            } else {
+                              $pictureToShow = $defaultProfilePicture;
+                            }
+                          } else {
+                            $pictureToShow = $defaultProfilePicture;
+                          }
+
+                          echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $pictureToShow . '" alt="#" />';
+                          ?>
+                          <?php
+                          /*$defaultProfilePicture = $profilePicture; // Assuming $profilePicture contains the default picture URL
+                          
+                          // Check if the user is logged in
+                          if (isset($_SESSION['user_id'])) {
+                            $loggedInUserId = $_SESSION['user_id']; // Change this to the appropriate session variable for storing user ID
+                          
+                            // Retrieve profile picture and default_profile_picture for the logged-in user
+                            $sql = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $loggedInUserId";
+                            $result = mysqli_query($conn, $sql) or die("query unsuccessful");
+
+                            if (mysqli_num_rows($result) > 0) {
+                              $row = mysqli_fetch_assoc($result);
+                              $profilePictureUrl = $row['profile_picture'];
+                              $isDefaultPicture = $row['default_profile_picture'];
+
+                              if (!$isDefaultPicture && !empty($profilePictureUrl)) {
+                                echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $profilePictureUrl . '" alt="#" />'; // Display default picture or user who is currently logged in
+                              } else {
+                                echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture if user not found
+                              }
+                            } else {
+                              echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture if user not found
+                            }
+                          } else {
+                            echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture for non-logged-in users
+                          }*/
+                          ?>
+                        </div>
+
+                        <!--Text Area-->
+                        <div class="flex-1 px-2 pt-2 mt-2">
+                          <textarea
+                            class="bg-transparent font-medium text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-white focus:ring-0 h-50"
+                            autocomplete="off" name="text_post" id="textArea" cols="50" rows="3"
+                            placeholder="What's happening?"></textarea>
+                          <!--Image Prev-->
+                          <div id="image-preview2" class="text-center mt-4 mr-4" style="display: none">
+                            <img id="preview-image2"
+                              class="rounded-lg w-full h-72 mb-2 object-cover border-2 border-indigo-500"
+                              alt="Image Preview" />
                           </div>
                         </div>
-                        <!-- Buttons for creat new post modal -->
-                        <div class="flex justify-between border-t dark:border-gray-700">
-                          <div class="w-full">
-                            <div class="px-2">
-                              <div class="flex items-center">
-                                <div class="flex flex-row flex-1 text-center p-1 m-2 order-1 space-y-2">
-                                  <input id="uploadpost2" type="file" class="form-control" name="photo"
-                                    onchange="previewFile(2)" />
-                                  <!-- Button for uplaod image -->
-                                  <label for="uploadpost2" href="#"
-                                    class="w-10 mt-1 ml-2 group flex items-center text-blue-400 px-2 py-2 text-base leading-6 font-medium rounded-full hover:bg-indigo-700 hover:text-blue-300">
-                                    <span class="material-symbols-rounded">
-                                      photo
-                                    </span>
-                                  </label>
-                                </div>
+                      </div>
+                      <!-- Buttons for creat new post modal -->
+                      <div class="flex justify-between border-t dark:border-gray-700">
+                        <div class="w-full">
+                          <div class="px-2">
+                            <div class="flex items-center">
+                              <div class="flex flex-row flex-1 text-center p-1 m-2 order-1 space-y-2">
+                                <input id="uploadpost2" type="file" class="form-control" name="photo"
+                                  onchange="previewFile(2)" />
+                                <!-- Button for uplaod image -->
+                                <label for="uploadpost2" href="#"
+                                  class="w-10 mt-1 ml-2 group flex items-center text-blue-400 px-2 py-2 text-base leading-6 font-medium rounded-full hover:bg-indigo-700 hover:text-blue-300">
+                                  <span class="material-symbols-rounded">
+                                    photo
+                                  </span>
+                                </label>
+                              </div>
 
-                                <div class="flex text-center p-1 my-2 order-last justify-end">
-                                  <button
-                                    class="text-white dark:text-gray-900 bg-indigo-500 hover:bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-bold py-2 px-8 mr-2 rounded-full transform hover:-translate-y-1 duration-200"
-                                    name="save">
-                                    ツイッター
-                                  </button>
-                                </div>
+                              <div class="flex text-center p-1 my-2 order-last justify-end">
+                                <button
+                                  class="text-white dark:text-gray-900 bg-indigo-500 hover:bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 font-bold py-2 px-8 mr-2 rounded-full transform hover:-translate-y-1 duration-200"
+                                  name="save">
+                                  ツイッター
+                                </button>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </form>
-                    </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
-                <ul class="list-none">
+              </div>
+              <ul class="list-none">
 
+                <!--List of post-->
+                <?php
+                require 'config.php';
+                $query = mysqli_query($conn, "SELECT * FROM `userposts` ORDER BY post_id DESC") or die(mysqli_error());
+                while ($fetch = mysqli_fetch_array($query)) {
+                  $postID = $fetch['post_id']; // Retrieve the post ID
+                  $userID = $fetch['user_id']; // Retrieve the user ID
+                  ?>
                   <!--Post-->
+
+                  <?php
+                  // Retrieve the post's user ID using the provided post_id
+                  $postId = $fetch['post_id'];
+                  $sqlPost = "SELECT user_id FROM userposts WHERE post_id = $postId";
+                  $resultPost = mysqli_query($conn, $sqlPost) or die("post query unsuccessful");
+
+                  if (mysqli_num_rows($resultPost) > 0) {
+                    $postRow = mysqli_fetch_assoc($resultPost);
+                    $postUserId = $postRow['user_id'];
+
+                    // Retrieve profile picture and default_profile_picture for the user who owns the post
+                    $sqlUser = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $postUserId";
+                    $resultUser = mysqli_query($conn, $sqlUser) or die("user query unsuccessful");
+
+                    if (mysqli_num_rows($resultUser) > 0) {
+                      $userRow = mysqli_fetch_assoc($resultUser);
+                      $profilePictureUrl = $userRow['profile_picture'];
+                      $isDefaultPicture = $userRow['default_profile_picture'];
+
+                      if (!empty($profilePictureUrl)) {
+                        $pictureToShow = $profilePictureUrl;
+                      } else {
+                        $pictureToShow = $defaultProfilePicture;
+                      }
+                    } else {
+                      $pictureToShow = $defaultProfilePicture;
+                    }
+                  } else {
+                    $pictureToShow = $defaultProfilePicture;
+                  }
+                  ?>
+
                   <li>
                     <article class="hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
                       <div class="flex flex-shrink-0 p-4 pb-0">
-                        <a href="#" class="flex-shrink-0 group block">
+                        <a href="/profile.php?view_user_id=<?php echo $userID; ?>" class="flex-shrink-0 group block">
                           <div class="flex items-center">
                             <div>
-                              <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>"
-                                alt="" />
+
+                              <div class="profile-picture">
+                                <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $pictureToShow ?>"
+                                  alt="#" />
+                              </div>
                             </div>
-                            <div class="ml-3">
+                            <div class="flex ml-3">
                               <p class="text-base leading-6 font-medium text-gray-900 dark:text-white">
 
                                 <?php
-                                // if (isset($_SESSION['Email']) && $_SESSION['Email'] === $fetch['Email']) {
-                                //   echo $_SESSION['ifirstname'] . ' ' . $_SESSION['ilastname'];
-                                //   $isCurrentUserPost = true;
-                                // } else {
-                                //   echo $row['ifirstname'] . ' ' . $row['ilastname']; // Display username for other users' posts
-                                //   $isCurrentUserPost = false;
-                                // }
-                              
+                                // Displays user profile User Name and User Email
                                 $sql = "SELECT * FROM users WHERE user_id = $userID";
                                 $result = mysqli_query($conn, $sql) or die("query unsuccessful");
                                 if (mysqli_num_rows($result) > 0) {
@@ -414,20 +537,25 @@ if (empty($_SESSION['user_id'])) {
                                       @
                                       <?php echo $row['iUserEmail']; ?> . <?php }
                                 } ?>
-                                  <?php
-                                  $postCreated = strtotime($fetch['post_created']); // Convert to timestamp
-                                  echo date('F j, Y', $postCreated); // Display in desired format 
-                                  ?>
-                                  <?php
-                                  $timePosted = strtotime($fetch['time_posted']); // Convert to timestamp
-                                  echo date('g:i A', $timePosted); // Display in desired format
-                                  ?>
-                                </span>
                               </p>
                             </div>
-
                           </div>
                         </a>
+                        <div class="flex items-center">
+                          <a href="" class="">
+                            <p>
+                              <?php
+                              $postCreated = strtotime($fetch['post_created']); // Convert to timestamp
+                              echo date('F j, Y', $postCreated); // Display in desired format 
+                              ?>
+                              <?php
+                              $timePosted = strtotime($fetch['time_posted']); // Convert to timestamp
+                              echo date('g:i A', $timePosted); // Display in desired format
+                              ?>
+                              </span>
+                            </p>
+                          </a>
+                        </div>
                       </div>
 
                       <div class="pl-16 overflow-none">
@@ -435,6 +563,7 @@ if (empty($_SESSION['user_id'])) {
                           class="text-base width-auto font-medium text-gray-900 dark:text-white flex-shrink mx-2 fit-content break-words">
                           <?php echo $fetch['text_post'] ?>
                         </p>
+
                         <?php
                         if ($fetch['image_post']) {
                           ?>
@@ -445,6 +574,7 @@ if (empty($_SESSION['user_id'])) {
                             </div>
                           </div>
                         <?php } ?>
+
                         <div class="flex items-center py-4">
                           <?php if ($isCurrentUserPost) { ?>
                             <!-- Display user-specific buttons for their own posts -->
@@ -515,8 +645,8 @@ if (empty($_SESSION['user_id'])) {
                   <!--End of Post-->
                 </ul>
                 <?php
-              }
-              ?>
+                }
+                ?>
               <!--End of list of Post-->
             </section>
 
@@ -831,6 +961,48 @@ if (empty($_SESSION['user_id'])) {
         imagePreviewDiv.style.display = "block";
       }
     }
+  </script>
+
+  <!--For modals just incase -->
+  <script>
+    const openModalButtons = document.querySelectorAll('[data-modal-toggle]');
+    const closeModalButtons = document.querySelectorAll('[data-modal-hide]');
+    const modalBackgrounds = document.querySelectorAll('.modal-background');
+
+    // Function to open a specific modal
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.remove('hidden');
+    }
+
+    // Function to close a specific modal
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.add('hidden');
+    }
+
+    // Add click event listeners to open modal buttons
+    openModalButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const targetModal = button.getAttribute('data-modal-target');
+        openModal(targetModal);
+      });
+    });
+
+    // Add click event listeners to close modal buttons and backgrounds
+    closeModalButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const targetModal = button.getAttribute('data-modal-hide');
+        closeModal(targetModal);
+      });
+    });
+
+    modalBackgrounds.forEach(background => {
+      background.addEventListener('click', () => {
+        const targetModal = background.getAttribute('data-modal-hide');
+        closeModal(targetModal);
+      });
+    });
   </script>
 
   <!--Disable scroll bar default-->
