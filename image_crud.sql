@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 14, 2023 at 02:10 PM
+-- Generation Time: Aug 27, 2023 at 03:21 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -42,16 +42,9 @@ CREATE TABLE `userposts` (
 --
 
 INSERT INTO `userposts` (`post_id`, `post_created`, `time_posted`, `image_post_id`, `image_post`, `text_post`, `user_id`) VALUES
-(66, '2023-08-13', '15:31:34', NULL, 0x55736572506f7374732f53656261737469616e2d4572676f2f313639313931313839342e6a706567, 'Test 1', 2),
-(67, '2023-08-13', '15:31:40', NULL, 0x2f547769747465722f5068705f666f726d61742f736176652e706870, 'Test 2', 2),
-(68, '2023-08-13', '15:31:47', NULL, 0x2f547769747465722f5068705f666f726d61742f736176652e706870, 'Test 3', 2),
-(69, '2023-08-13', '15:34:05', NULL, 0x55736572506f7374732f53656261737469616e2d4572676f2f313639313931323034352e6a706567, 'Test 4', 2),
-(70, '2023-08-13', '15:35:50', NULL, 0x55736572506f7374732f467269747a206a65726f6d652d546f6265732f313639313931323135302e6a7067, 'Test 5', 1),
-(71, '2023-08-13', '15:47:22', NULL, 0x55736572506f7374732f467269747a206a65726f6d652d546f6265732f313639313931323834322e6a7067, 'Test 6', 1),
-(72, '2023-08-13', '15:49:44', NULL, 0x55736572506f7374732f467269747a206a65726f6d652d546f6265732f313639313931323938342e6a7067, 'Test 7', 1),
-(73, '2023-08-13', '16:01:05', NULL, 0x55736572506f7374732f467269747a206a65726f6d652d546f6265732f313639313931333636352e6a7067, 'Test 8', 1),
-(74, '2023-08-13', '16:02:50', NULL, 0x55736572506f7374732f467269747a206a65726f6d652d546f6265732f313639313931333737302e6a7067, 'Test 9', 1),
-(75, '2023-08-13', '16:09:34', NULL, 0x55736572506f7374732f53656261737469616e2d4572676f2f313639313931343137342e6a7067, '', 2);
+(90, '2023-08-27', '21:13:03', NULL, 0x55736572506f7374732f467269747a206a65726f6d652d546f6265732f313639333134313938332e6a7067, 'Fresh start I would like to start this with this fine lady <3 ', 1),
+(91, '2023-08-27', '21:15:10', NULL, 0x55736572506f7374732f53656261737469616e2d4572676f2f313639333134323131302e6a7067, 'Now every user must post something right?', 2),
+(92, '2023-08-27', '21:16:29', NULL, 0x55736572506f7374732f4b6576696e20427279616e2d44617075672f313639333134323138392e6a7067, 'Let\'s see I got one fine lady too', 3);
 
 -- --------------------------------------------------------
 
@@ -67,18 +60,23 @@ CREATE TABLE `users` (
   `ibirth_day` int(11) DEFAULT NULL,
   `ibirth_year` int(11) DEFAULT NULL,
   `iUserEmail` varchar(100) NOT NULL,
-  `iUserPassword` varchar(100) NOT NULL
+  `iUserPassword` varchar(100) NOT NULL,
+  `profile_picture` varchar(255) NOT NULL DEFAULT 'Images/user.jpg',
+  `default_profile_picture` tinyint(1) DEFAULT 1,
+  `date_created` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `ifirstname`, `ilastname`, `ibirth_month`, `ibirth_day`, `ibirth_year`, `iUserEmail`, `iUserPassword`) VALUES
-(1, 'Fritz jerome', 'Tobes', 'May', 21, 2000, 'Admin@gmail.com', '123'),
-(2, 'Sebastian', 'Ergo', 'January', 21, 2000, 'Sebastian@gmail.com', 'sebastian123'),
-(3, 'Kevin Bryan', 'Dapug', 'February', 17, 2000, 'Kevin@gmail.com', 'Kevin123'),
-(4, 'Jerome', 'Tobes', 'May', 21, 2000, 'Jerome@gmail.com', 'jerome123');
+INSERT INTO `users` (`user_id`, `ifirstname`, `ilastname`, `ibirth_month`, `ibirth_day`, `ibirth_year`, `iUserEmail`, `iUserPassword`, `profile_picture`, `default_profile_picture`, `date_created`) VALUES
+(1, 'Fritz jerome', 'Tobes', 'May', 21, 2000, 'Admin@gmail.com', '123', 'Images/☆.jpg', 0, '2023-08-26'),
+(2, 'Sebastian', 'Ergo', 'January', 21, 2000, 'Sebastian@gmail.com', 'sebastian123', 'Images/☆☆.jpg', 0, '2023-08-26'),
+(3, 'Kevin Bryan', 'Dapug', 'February', 17, 2000, 'Kevin@gmail.com', 'Kevin123', 'Images/user.jpg', 1, '2023-08-26'),
+(4, 'Jerome', 'Tobes', 'May', 21, 2000, 'Jerome@gmail.com', 'jerome123', 'Images/user.jpg', 1, '2023-08-26'),
+(5, 'Hannah', 'Tobes', 'September', 3, 2001, 'Hannah@gmail.com', '123', 'Images/user.jpg', 1, '2023-08-26'),
+(6, 'Irene Joy', 'Tobes', 'June', 28, 2004, 'Irene@gmail.com', 'irene123', 'Images/user.jpg', 1, '2023-08-26');
 
 --
 -- Indexes for dumped tables
@@ -88,8 +86,7 @@ INSERT INTO `users` (`user_id`, `ifirstname`, `ilastname`, `ibirth_month`, `ibir
 -- Indexes for table `userposts`
 --
 ALTER TABLE `userposts`
-  ADD PRIMARY KEY (`post_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD PRIMARY KEY (`post_id`);
 
 --
 -- Indexes for table `users`
@@ -106,23 +103,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `userposts`
 --
 ALTER TABLE `userposts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `userposts`
---
-ALTER TABLE `userposts`
-  ADD CONSTRAINT `userposts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

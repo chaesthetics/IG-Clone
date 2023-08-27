@@ -57,7 +57,7 @@ if (isset($_POST['save'])) {
                         $stmt->execute();
                         $stmt->close();
 
-                        echo "<script>alert('Post successful'); window.location.href = '$_SERVER[HTTP_REFERER]';</script>";
+                        echo "<script>alert('Post successful!!!'); window.location.href = '$_SERVER[HTTP_REFERER]';</script>";
                     } else {
                         echo "<script>alert('Error preparing statement.'); window.location.href = '$_SERVER[HTTP_REFERER]';</script>";
                     }
