@@ -25,11 +25,6 @@ if (isset($_POST['signin'])) {
     $_SESSION["ibirth_year"] = $row['ibirth_year'];
     $_SESSION["date_created"] = $row['date_created'];
     $_SESSION["profile_picture"] = $row['profile_picture'];
-    $_SESSION["background_picture"] = $row['background_picture'];
-    $_SESSION["default_background_picture"] = $row['default_background_picture'];
-    $_SESSION["bio"] = $row['bio'];
-    $_SESSION["location"] = $row['location'];
-    $_SESSION["website"] = $row['website'];
 
   } else {
     $promtMessage = '<div
