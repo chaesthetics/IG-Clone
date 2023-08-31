@@ -9,6 +9,9 @@ $lastname = $_SESSION["ilastname"];
 $birth_month = $_SESSION["ibirth_month"];
 $birth_day = $_SESSION["ibirth_day"];
 $birth_year = $_SESSION["ibirth_year"];
+$bio = $_SESSION["bio"];
+$location = $_SESSION["location"];
+$website = $_SESSION["website"];
 
 $res = mysqli_query($conn, "SELECT * FROM users WHERE iUserEmail ='$Email'");
 $row = mysqli_fetch_array($res);
@@ -468,8 +471,7 @@ if (empty($_SESSION['user_id'])) {
                       <!-- Description and others -->
                       <div class="mt-3">
                         <p class="leading-tight mb-2">
-                          Designer Engineer / Web Developer kuno / Arist <br />
-                          <b>Single.</b>
+                          <?php echo $_SESSION['bio'] ?>
                         </p>
                         <div class="text-gray-600 flex">
                           <span class="flex mr-2"><svg viewBox="0 0 24 24" class="h-5 w-5 paint-icon">
@@ -483,7 +485,7 @@ if (empty($_SESSION['user_id'])) {
                               </g>
                             </svg>
                             <a href="https://www.facebook.com/FrtzRome/" target="#"
-                              class="leading-5 ml-1 text-blue-400">www.facebook.com/FrtzRome</a></span>
+                              class="leading-5 ml-1 text-blue-400"><?php echo $_SESSION['website'] ?></a></span>
                           <span class="flex mr-2"><svg viewBox="0 0 24 24" class="h-5 w-5 paint-icon">
                               <g>
                                 <path
@@ -510,6 +512,9 @@ if (empty($_SESSION['user_id'])) {
                               echo $formattedDate; ?>
                             </span></span>
                         </div>
+                        <p class="leading-tight mb-2">
+                          <?php echo $_SESSION['location'] ?>
+                        </p>
                       </div>
                       <div class="pt-3 flex justify-start items-start w-full divide-x divide-gray-800 divide-solid">
                         <div class="text-center pr-3">
@@ -722,9 +727,9 @@ if (empty($_SESSION['user_id'])) {
 
                           <!-- Container for the buttons -->
                           <div class="absolute inset-0 flex flex-row justify-center items-center gap-2">
-                            <!-- Input for changing profile picture -->
+                            <!-- Input for changing background picture -->
                             <div class="flex flex-col justify-center items-center">
-                              <input id="uploadpost1" type="file" class="form-control" name="photo"
+                              <input id="uploadpost1" type="file" class="form-control" name="background_picture"
                                 onchange="previewFile(1)" />
                               <!-- Button for uploading image -->
                               <label for="uploadpost1"
@@ -734,7 +739,7 @@ if (empty($_SESSION['user_id'])) {
                                 </span>
                               </label>
                             </div>
-                            <!-- Input for changing profile picture -->
+                            <!-- Input for changing background picture -->
                             <div class="flex flex-col justify-center items-center">
                               <input id="uploadpost2" type="file" class="form-control" name="photo"
                                 onchange="previewFile(2)" />
@@ -759,7 +764,7 @@ if (empty($_SESSION['user_id'])) {
                                 <div class="h-36 w-36 md rounded-full relative Profile picture">
                                   <!--Input for change profile picture-->
                                   <div class="absolute z-10 bottom-9 text-center p-1 my-2 mx-10 order-1 space-y-2">
-                                    <input id="uploadpost2" type="file" class="form-control" name="photo"
+                                    <input id="uploadpost2" type="file" class="form-control" name="profile_picture"
                                       onchange="previewFile(2)" />
                                     <!-- Button for uplaod image -->
                                     <label for="uploadpost2" href="#"
@@ -816,20 +821,20 @@ if (empty($_SESSION['user_id'])) {
                               <div class="relative z-0 w-full mb-6 group">
                                 <input type="text" name="floating_first_name" id="floating_first_name"
                                   class="block py-2.5 px-0 w-full text-xl font-bold bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                  placeholder=" " value="<?php echo $_SESSION['ilastname'] ?>" style="color: inherit;"
+                                  placeholder=" " value="<?php echo $_SESSION['ifirstname'] ?>" style="color: inherit;"
                                   required />
-                                <label for="floating_first_name"
+                                <label for="floating_last_name"
                                   class="absolute text-sm font-bold text-gray-400 -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500">First
                                   name</label>
                               </div>
 
                               <!--Last name-->
                               <div class="relative z-0 w-full mb-6 group">
-                                <input type="text" name="floating_first_name" id="floating_first_name"
+                                <input type="text" name="floating_last_name" id="floating_last_name"
                                   class="block py-2.5 px-0 w-full text-xl font-bold bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                   placeholder=" " value="<?php echo $_SESSION['ilastname'] ?>" style="color: inherit;"
                                   required />
-                                <label for="floating_first_name"
+                                <label for="floating_last_name"
                                   class="absolute text-sm font-bold text-gray-400 -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Last
                                   name</label>
                               </div>
@@ -838,33 +843,33 @@ if (empty($_SESSION['user_id'])) {
                             <!--Bio-->
                             <div class="mx-5">
                               <div class="relative z-0 w-full mb-6 group">
-                                <input type="text" name="floating_first_name" id="floating_first_name"
+                                <input type="text" name="floating_bio" id="floating_bio"
                                   class="block py-2.5 px-0 w-full text-xl font-bold bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                  placeholder=" " value="<?php echo $_SESSION['ilastname'] ?>" style="color: inherit;"
+                                  placeholder=" " value="<?php echo $_SESSION['bio'] ?>" style="color: inherit;"
                                   required />
-                                <label for="floating_first_name"
+                                <label for="floating_bio"
                                   class="absolute text-sm font-bold text-gray-400 -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Bio
                                 </label>
                               </div>
 
                               <!--Location-->
                               <div class="relative z-0 w-full mb-6 group">
-                                <input type="text" name="floating_first_name" id="floating_first_name"
+                                <input type="text" name="floating_location" id="floating_location"
                                   class="block py-2.5 px-0 w-full text-xl font-bold bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                  placeholder=" " value="<?php echo $_SESSION['ilastname'] ?>" style="color: inherit;"
+                                  placeholder=" " value="<?php echo $_SESSION['location'] ?>" style="color: inherit;"
                                   required />
-                                <label for="floating_first_name"
+                                <label for="floating_location"
                                   class="absolute text-sm font-bold text-gray-400 -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Location
                                 </label>
                               </div>
 
                               <!--Website-->
                               <div class="relative z-0 w-full mb-6 group">
-                                <input type="text" name="floating_first_name" id="floating_first_name"
+                                <input type="text" name="floating_website" id="floating_website"
                                   class="block py-2.5 px-0 w-full text-xl font-bold bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                  placeholder=" " value="<?php echo $_SESSION['ilastname'] ?>" style="color: inherit;"
+                                  placeholder=" " value="<?php echo $_SESSION['website'] ?>" style="color: inherit;"
                                   required />
-                                <label for="floating_first_name"
+                                <label for="floating_website"
                                   class="absolute text-sm font-bold text-gray-400 -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Website
                                 </label>
                               </div>
