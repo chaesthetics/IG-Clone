@@ -1,4 +1,5 @@
 <?php
+
 include('config.php');
 session_start();
 
@@ -97,8 +98,9 @@ if (empty($_SESSION['user_id'])) {
               </li>
               <li>
                 <a href="/profile.php"
-                  class="flex py-2 px-6 rounded-full text-base font-semibold transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-white"><span
-                    class="material-symbols-rounded mr-2"> person </span>Profile</a>
+                  class="flex py-2 px-6 rounded-full text-base font-semibold transform hover:-translate-y-1 hover:bg-indigo-700 duration-200 hover:text-white">
+                  <span class="material-symbols-rounded mr-2"> person </span>Profile
+                </a>
               </li>
               <li>
                 <div class="relative">
@@ -212,21 +214,23 @@ if (empty($_SESSION['user_id'])) {
                       <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $profilePicture; ?>" alt="#" />
                     </div>
 
-                    <div class="ml-3">
+                    <div class="ml-3 text-left">
                       <p class="text-base leading-6 font-medium">
                         <?php
                         if (isset($_SESSION['Email']) && $_SESSION['Email'] === $fetch['Email']) {
-                          echo $_SESSION['ifirstname'] . ' ' . $_SESSION['ilastname']; // Display name of the current login user
+                          echo $_SESSION['ifirstname'] . ' ' . $_SESSION['ilastname'];
                           $isCurrentUserPost = true;
                         } else {
-                          echo $row['ifirstname'] . ' ' . $row['ilastname']; // Display name for other users' posts
+                          echo $row['ifirstname'] . ' ' . $row['ilastname']; // Display username for other users' posts
                           $isCurrentUserPost = false;
                         }
                         ?>
                       </p>
                       <p
                         class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-500 transition ease-in-out duration-150">
-                        @<?php echo $_SESSION['iUserEmail']; ?>
+                        <?php $email = $_SESSION['iUserEmail'];
+                        $userName = substr($email, 0, strpos($email, '@'));
+                        echo '@' . $userName; ?>
                       </p>
                     </div>
                   </div>
@@ -508,7 +512,7 @@ if (empty($_SESSION['user_id'])) {
                   }
                   ?>
 
-                  <li>
+                  <div>
                     <article class="hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
                       <div class="flex flex-shrink-0 p-4 pb-0">
                         <a href="/profile.php?view_user_id=<?php echo $userID; ?>" class="flex-shrink-0 group block">
@@ -533,7 +537,7 @@ if (empty($_SESSION['user_id'])) {
                                       ?>
 
                                     <span
-                                      class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                                      class="text-sm leading-5 font-medium text-gray-400 hover:text-gray-300 transition ease-in-out duration-150">
                                       @
                                       <?php echo $row['iUserEmail']; ?> . <?php }
                                 } ?>
@@ -542,7 +546,8 @@ if (empty($_SESSION['user_id'])) {
                           </div>
                         </a>
                         <div class="flex items-center">
-                          <a href="" class="">
+                          <a href=""
+                            class="text-sm leading-5 font-medium text-gray-400 hover:text-gray-300 transition ease-in-out duration-150">
                             <p>
                               <?php
                               $postCreated = strtotime($fetch['post_created']); // Convert to timestamp
@@ -641,7 +646,7 @@ if (empty($_SESSION['user_id'])) {
                       </div>
                       <hr class="border-gray-900 dark:border-gray-700" />
                     </article>
-                  </li>
+                  </div>
                   <!--End of Post-->
                 </ul>
                 <?php
