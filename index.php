@@ -41,6 +41,7 @@ if (empty($_SESSION['user_id'])) {
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     input:checked~.dot {
       transform: translateX(100%);
@@ -197,16 +198,20 @@ if (empty($_SESSION['user_id'])) {
                       $getProfilePictureQuery = "SELECT profile_picture FROM users WHERE user_id = '$userId'";
                       $profilePictureResult = mysqli_query($conn, $getProfilePictureQuery);
 
-                      if ($profilePictureResult && mysqli_num_rows($profilePictureResult) > 0) {
+                      if ($profilePictureResult) {
                         $profilePictureData = mysqli_fetch_assoc($profilePictureResult);
-                        $profilePicture = $profilePictureData['profile_picture'];
+
+                        if ($profilePictureData && isset($profilePictureData['profile_picture']) && !empty($profilePictureData['profile_picture'])) {
+                          // User has a profile picture set, use it
+                          $profilePicture = $profilePictureData['profile_picture'];
+                        } else {
+                          // User has no profile picture set, show the default picture
+                          $profilePicture = 'Images/user1.jpg';
+                        }
                       } else {
-                        // User not found or no profile picture set, show the default picture
-                        $profilePicture = 'Images/user.jpg';
+                        // Error occurred while querying the database
+                        // Handle the error as needed
                       }
-                    } else {
-                      // User not logged in, show the default picture
-                      $profilePicture = 'Images/user.jpg';
                     }
                     ?>
 
@@ -258,41 +263,36 @@ if (empty($_SESSION['user_id'])) {
                   <div class="flex">
                     <div class="m-2 w-10 py-1">
                       <?php
-                      $defaultProfilePicture = $profilePicture; // Assuming $profilePicture contains the default picture URL
+                      $defaultProfilePicture = 'Images/user1.jpg'; // Set the default picture URL
                       
                       // Check if the user is logged in
                       if (isset($_SESSION['user_id'])) {
                         $loggedInUserId = $_SESSION['user_id']; // Change this to the appropriate session variable for storing user ID
                       
-                        // Retrieve profile picture and default_profile_picture for the logged-in user
-                        $sql = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $loggedInUserId";
-                        $result = mysqli_query($conn, $sql) or die("query unsuccessful");
+                        // Retrieve profile picture for the logged-in user
+                        $sql = "SELECT profile_picture FROM users WHERE user_id = $loggedInUserId";
+                        $result = mysqli_query($conn, $sql) or die("Query unsuccessful");
 
-                        if (mysqli_num_rows($result) > 0) {
-                          $row = mysqli_fetch_assoc($result);
-                          $profilePictureUrl = $row['profile_picture'];
-                          $isDefaultPicture = $row['default_profile_picture'];
+                        $row = mysqli_fetch_assoc($result);
 
-                          if (!$isDefaultPicture && !empty($profilePictureUrl)) {
-                            echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $profilePictureUrl . '" alt="#" />'; // Display default picture or user who is currently logged in
-                          } else {
-                            echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture if user not found
-                          }
-                        } else {
-                          echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture if user not found
-                        }
+                        // Get the user's profile picture URL, or use the default if empty or not found
+                        $profilePictureUrl = !empty($row['profile_picture']) ? $row['profile_picture'] : $defaultProfilePicture;
+
+                        echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $profilePictureUrl . '" alt="#" />'; // Display the user's profile picture or default picture
                       } else {
-                        echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture for non-logged-in users
+                        // Display the default picture for non-logged-in users
+                        echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />';
                       }
                       ?>
+
                     </div>
 
                     <!--Text Area-->
                     <div class="flex-1 px-2 pt-2 mt-2">
                       <textarea
-                        class="bg-transparent font-medium text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-white focus:ring-0 h-auto"
-                        autocomplete="off" name="text_post" id="" cols="50" rows="2"
-                        placeholder="What's happening?"></textarea>
+                        class="bg-transparent font-medium text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-gray-100 focus:ring-0 h-50"
+                        autocomplete="off" name="text_post" id="textArea" cols="50" rows="3"
+                        placeholder="What's happening?" style="overflow: hidden;"></textarea>
                       <!--Image Prev-->
                       <div id="image-preview1" class="text-center mt-4 mr-4" style="display: none">
                         <img id="preview-image1"
@@ -363,71 +363,36 @@ if (empty($_SESSION['user_id'])) {
                       <div class="flex">
                         <div class="m-2 w-10 py-1">
                           <?php
-                          $defaultProfilePicture = $profilePicture; // Assuming $profilePicture contains the default picture URL
+                          $defaultProfilePicture = 'Images/user1.jpg'; // Set the default picture URL
                           
                           // Check if the user is logged in
                           if (isset($_SESSION['user_id'])) {
                             $loggedInUserId = $_SESSION['user_id']; // Change this to the appropriate session variable for storing user ID
                           
-                            // Retrieve profile picture and default_profile_picture for the logged-in user
-                            $sql = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $loggedInUserId";
-                            $result = mysqli_query($conn, $sql) or die("query unsuccessful");
+                            // Retrieve profile picture for the logged-in user
+                            $sql = "SELECT profile_picture FROM users WHERE user_id = $loggedInUserId";
+                            $result = mysqli_query($conn, $sql) or die("Query unsuccessful");
 
-                            if (mysqli_num_rows($result) > 0) {
-                              $row = mysqli_fetch_assoc($result);
-                              $profilePictureUrl = $row['profile_picture'];
-                              $isDefaultPicture = $row['default_profile_picture'];
+                            $row = mysqli_fetch_assoc($result);
 
-                              if (!$isDefaultPicture && !empty($profilePictureUrl)) {
-                                $pictureToShow = $profilePictureUrl;
-                              } else {
-                                $pictureToShow = $defaultProfilePicture;
-                              }
-                            } else {
-                              $pictureToShow = $defaultProfilePicture;
-                            }
+                            // Get the user's profile picture URL, or use the default if empty or not found
+                            $profilePictureUrl = !empty($row['profile_picture']) ? $row['profile_picture'] : $defaultProfilePicture;
+
+                            echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $profilePictureUrl . '" alt="#" />'; // Display the user's profile picture or default picture
                           } else {
-                            $pictureToShow = $defaultProfilePicture;
+                            // Display the default picture for non-logged-in users
+                            echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />';
                           }
-
-                          echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $pictureToShow . '" alt="#" />';
                           ?>
-                          <?php
-                          /*$defaultProfilePicture = $profilePicture; // Assuming $profilePicture contains the default picture URL
-                          
-                          // Check if the user is logged in
-                          if (isset($_SESSION['user_id'])) {
-                            $loggedInUserId = $_SESSION['user_id']; // Change this to the appropriate session variable for storing user ID
-                          
-                            // Retrieve profile picture and default_profile_picture for the logged-in user
-                            $sql = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $loggedInUserId";
-                            $result = mysqli_query($conn, $sql) or die("query unsuccessful");
 
-                            if (mysqli_num_rows($result) > 0) {
-                              $row = mysqli_fetch_assoc($result);
-                              $profilePictureUrl = $row['profile_picture'];
-                              $isDefaultPicture = $row['default_profile_picture'];
-
-                              if (!$isDefaultPicture && !empty($profilePictureUrl)) {
-                                echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $profilePictureUrl . '" alt="#" />'; // Display default picture or user who is currently logged in
-                              } else {
-                                echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture if user not found
-                              }
-                            } else {
-                              echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture if user not found
-                            }
-                          } else {
-                            echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture for non-logged-in users
-                          }*/
-                          ?>
                         </div>
 
                         <!--Text Area-->
                         <div class="flex-1 px-2 pt-2 mt-2">
                           <textarea
-                            class="bg-transparent font-medium text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-white focus:ring-0 h-50"
+                            class="bg-transparent font-medium text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-gray-100 focus:ring-0 h-50"
                             autocomplete="off" name="text_post" id="textArea" cols="50" rows="3"
-                            placeholder="What's happening?"></textarea>
+                            placeholder="What's happening?" style="overflow: hidden;"></textarea>
                           <!--Image Prev-->
                           <div id="image-preview2" class="text-center mt-4 mr-4" style="display: none">
                             <img id="preview-image2"
@@ -484,33 +449,79 @@ if (empty($_SESSION['user_id'])) {
                   // Retrieve the post's user ID using the provided post_id
                   $postId = $fetch['post_id'];
                   $sqlPost = "SELECT user_id FROM userposts WHERE post_id = $postId";
-                  $resultPost = mysqli_query($conn, $sqlPost) or die("post query unsuccessful");
+                  $resultPost = mysqli_query($conn, $sqlPost) or die("Post query unsuccessful");
 
-                  if (mysqli_num_rows($resultPost) > 0) {
+                  $pictureToShow = $defaultProfilePicture; // Set a default value
+                
+                  if ($resultPost) {
                     $postRow = mysqli_fetch_assoc($resultPost);
                     $postUserId = $postRow['user_id'];
 
-                    // Retrieve profile picture and default_profile_picture for the user who owns the post
-                    $sqlUser = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $postUserId";
-                    $resultUser = mysqli_query($conn, $sqlUser) or die("user query unsuccessful");
+                    // Retrieve profile picture for the user who owns the post
+                    $sqlUser = "SELECT profile_picture FROM users WHERE user_id = $postUserId";
+                    $resultUser = mysqli_query($conn, $sqlUser) or die("User query unsuccessful");
 
-                    if (mysqli_num_rows($resultUser) > 0) {
+                    if ($resultUser) {
                       $userRow = mysqli_fetch_assoc($resultUser);
                       $profilePictureUrl = $userRow['profile_picture'];
-                      $isDefaultPicture = $userRow['default_profile_picture'];
 
                       if (!empty($profilePictureUrl)) {
                         $pictureToShow = $profilePictureUrl;
-                      } else {
-                        $pictureToShow = $defaultProfilePicture;
                       }
-                    } else {
-                      $pictureToShow = $defaultProfilePicture;
                     }
-                  } else {
-                    $pictureToShow = $defaultProfilePicture;
                   }
                   ?>
+
+                  <!--Popover-->
+                  <div data-popover id="popover-user-profile" role="tooltip"
+                    class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">
+                    <div class="p-3">
+                      <div class="flex items-center justify-between mb-2">
+                        <a href="#">
+                          <img class="w-10 h-10 rounded-full" src="<?php echo $pictureToShow ?>" alt="">
+                        </a>
+                        <div>
+                          <button type="button"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Follow</button>
+                        </div>
+                      </div>
+                      <p class="text-base font-semibold leading-none text-gray-900 dark:text-white">
+                        <?php
+                        // Displays user profile User Name and User Email
+                        $sql = "SELECT * FROM users WHERE user_id = $userID";
+                        $result = mysqli_query($conn, $sql) or die("query unsuccessful");
+                        if (mysqli_num_rows($result) > 0) {
+                          while ($row = mysqli_fetch_assoc($result)) {
+                            $emailParts = explode('@', $row['iUserEmail']);
+                            $username = $emailParts[0]; // Extract the username part before '@'
+                      
+                            echo $row['ifirstname'] . ' ' . $row['ilastname'] . ' ';
+
+                            // Display "@" followed by the extracted username
+                            echo '<span class="text-sm leading-5 font-medium text-gray-400 hover:text-gray-300 transition ease-in-out duration-150">@' . $username . '</span>';
+                          }
+                        }
+                        ?>
+                      </p>
+                      <p class="mb-4 text-sm">Open-source contributor. Building <a href="#"
+                          class="text-blue-600 dark:text-blue-500 hover:underline">flowbite.com</a>.</p>
+                      <ul class="flex text-sm">
+                        <li class="mr-2">
+                          <a href="#" class="hover:underline">
+                            <span class="font-semibold text-gray-900 dark:text-white">799</span>
+                            <span>Following</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" class="hover:underline">
+                            <span class="font-semibold text-gray-900 dark:text-white">3,758</span>
+                            <span>Followers</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div data-popper-arrow></div>
+                  </div>
 
                   <div>
                     <article class="hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-350 ease-in-out">
@@ -519,13 +530,14 @@ if (empty($_SESSION['user_id'])) {
                           <div class="flex items-center">
                             <div>
 
-                              <div class="profile-picture">
+                              <!--Profile picture-->
+                              <div class="profile-picture" data-popover-target="popover-user-profile">
                                 <img class="inline-block h-10 w-10 rounded-full" src="<?php echo $pictureToShow ?>"
                                   alt="#" />
                               </div>
                             </div>
-                            <div class="flex ml-3">
-                              <p class="text-base leading-6 font-medium text-gray-900 dark:text-white">
+                            <div class="flex ml-3 items-center">
+                              <p class="text-base leading-5 font-medium text-gray-900 dark:text-white">
 
                                 <?php
                                 // Displays user profile User Name and User Email
@@ -533,22 +545,25 @@ if (empty($_SESSION['user_id'])) {
                                 $result = mysqli_query($conn, $sql) or die("query unsuccessful");
                                 if (mysqli_num_rows($result) > 0) {
                                   while ($row = mysqli_fetch_assoc($result)) {
-                                    echo $row['ifirstname'] . ' ' . $row['ilastname']
-                                      ?>
+                                    $emailParts = explode('@', $row['iUserEmail']);
+                                    $username = $emailParts[0]; // Extract the username part before '@'
+                              
+                                    echo $row['ifirstname'] . ' ' . $row['ilastname'] . ' ';
 
-                                    <span
-                                      class="text-sm leading-5 font-medium text-gray-400 hover:text-gray-300 transition ease-in-out duration-150">
-                                      @
-                                      <?php echo $row['iUserEmail']; ?> . <?php }
-                                } ?>
+                                    // Display "@" followed by the extracted username and add a space
+                                    echo '<span class="text-sm leading-5 font-medium text-gray-400 hover:text-gray-300 transition ease-in-out duration-150">@' . $username . '</span> ';
+                                  }
+                                }
+                                ?>
+
                               </p>
                             </div>
                           </div>
                         </a>
                         <div class="flex items-center">
-                          <a href=""
-                            class="text-sm leading-5 font-medium text-gray-400 hover:text-gray-300 transition ease-in-out duration-150">
-                            <p>
+                          <a href="" class="">
+                            <span
+                              class="ml-1 text-sm leading-5 font-medium text-gray-400 hover:text-gray-300 transition ease-in-out duration-150">
                               <?php
                               $postCreated = strtotime($fetch['post_created']); // Convert to timestamp
                               echo date('F j, Y', $postCreated); // Display in desired format 
@@ -557,8 +572,7 @@ if (empty($_SESSION['user_id'])) {
                               $timePosted = strtotime($fetch['time_posted']); // Convert to timestamp
                               echo date('g:i A', $timePosted); // Display in desired format
                               ?>
-                              </span>
-                            </p>
+                            </span>
                           </a>
                         </div>
                       </div>
@@ -966,6 +980,32 @@ if (empty($_SESSION['user_id'])) {
         imagePreviewDiv.style.display = "block";
       }
     }
+  </script>
+
+
+  <script>
+    $(document).ready(function () {
+      // Attach a hover event handler to the profile picture div
+      $('.profile-picture').hover(function () {
+        // Get the user_id from the data-user-id attribute
+        var userID = $(this).data('user-id');
+
+        // Use AJAX to fetch user information based on userID
+        $.ajax({
+          url: 'fetch_user_profile.php', // Replace with your server-side script
+          type: 'GET',
+          data: { user_id: userID },
+          success: function (data) {
+            // Update the popover content with the fetched user information
+            // Example: $('#popover-user-profile .user-name').text(data.name);
+            //          $('#popover-user-profile .user-username').text(data.username);
+          },
+          error: function () {
+            console.error('Error fetching user profile');
+          }
+        });
+      });
+    });
   </script>
 
   <!--For modals just incase -->
