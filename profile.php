@@ -9,6 +9,9 @@ $lastname = $_SESSION["ilastname"];
 $birth_month = $_SESSION["ibirth_month"];
 $birth_day = $_SESSION["ibirth_day"];
 $birth_year = $_SESSION["ibirth_year"];
+$bio = $_SESSION["bio"];
+$location = $_SESSION["location"];
+$website = $_SESSION["website"];
 
 $res = mysqli_query($conn, "SELECT * FROM users WHERE iUserEmail ='$Email'");
 $row = mysqli_fetch_array($res);
@@ -194,16 +197,18 @@ if (empty($_SESSION['user_id'])) {
                       $getProfilePictureQuery = "SELECT profile_picture FROM users WHERE user_id = '$userId'";
                       $profilePictureResult = mysqli_query($conn, $getProfilePictureQuery);
 
-                      if ($profilePictureResult && mysqli_num_rows($profilePictureResult) > 0) {
+                      if ($profilePictureResult) {
                         $profilePictureData = mysqli_fetch_assoc($profilePictureResult);
-                        $profilePicture = $profilePictureData['profile_picture'];
+
+                        if ($profilePictureData && isset($profilePictureData['profile_picture']) && !empty($profilePictureData['profile_picture'])) {
+                          // User has a profile picture set, use it
+                          $profilePicture = $profilePictureData['profile_picture'];
+                        } else {
+                          // User has no profile picture set, show the default picture
+                          $profilePicture = 'Images/user1.jpg';
+                        }
                       } else {
-                        // User not found or no profile picture set, show the default picture
-                        $profilePicture = 'Images/user.jpg';
                       }
-                    } else {
-                      // User not logged in, show the default picture
-                      $profilePicture = 'Images/user.jpg';
                     }
                     ?>
 
@@ -259,6 +264,7 @@ if (empty($_SESSION['user_id'])) {
                           // Check if the view_user_id parameter is set in the URL
                           $viewingUserId = $_GET['view_user_id'];
 
+<<<<<<< HEAD
                           // Display email for the user being viewed
                           $sql = "SELECT iUserEmail FROM users WHERE user_id = $viewingUserId";
                           $result = mysqli_query($conn, $sql) or die("query unsuccessful");
@@ -268,8 +274,24 @@ if (empty($_SESSION['user_id'])) {
                           }
                         } else {
                           echo '@' . $_SESSION['iUserEmail'];
+=======
+                          // Display user name for the user being viewed
+                          $sql = "SELECT iUserEmail FROM users WHERE user_id = $viewingUserId LIMIT 1";
+                          $result = mysqli_query($conn, $sql) or die("Query unsuccessful");
+                          // Display the name and username of the user that being view 
+                          if ($row = mysqli_fetch_assoc($result)) {
+                            $email = $row['iUserEmail'];
+                            $userName = substr($email, 0, strpos($email, '@'));
+                            echo '@' . $userName;
+                          }
+                        } else {
+                          $email = $_SESSION['iUserEmail']; // Display the name and username of user that currently logged in
+                          $userName = substr($email, 0, strpos($email, '@'));
+                          echo '@' . $userName;
+>>>>>>> e4ae6338f48647867f40f1a3e076cebe4c71cd9b
                         }
                         ?>
+
                       </h2>
                       <p class="mb-0 w-48 text-xs text-gray-400">9,416 Tweets</p>
                     </div>
@@ -281,11 +303,38 @@ if (empty($_SESSION['user_id'])) {
                 <!-- User card-->
                 <div class="text-gray-900 dark:text-gray-100">
                   <div class="">
+<<<<<<< HEAD
                     <!--Background Image-->
                     <div class="w-full bg-cover bg-no-repeat bg-center"
                       style="height: 250px; background-image: url('Images/Profile BG.jpg');">
                       <img src="Images/Profile BG.jpg" alt="" class="opacity-0 w-full h-full" />
                     </div>
+=======
+                    <!-- Background Image -->
+                    <?php
+                    $loggedInUserId = isset($_GET['view_user_id']) ? $_GET['view_user_id'] : $_SESSION['user_id'];
+                    $sql = "SELECT profile_picture, background_picture FROM users WHERE user_id = $loggedInUserId";
+                    $result = mysqli_query($conn, $sql) or die("Query unsuccessful");
+
+                    $row = mysqli_fetch_assoc($result);
+
+                    $profilePictureUrl = $row['profile_picture'];
+                    // Check if the user already have a background picture or set to the default one "Images/tokyo.jpg"
+                    $backgroundPictureUrl = !empty($row['background_picture']) ? $row['background_picture'] : "Images/tokyo.jpg";
+
+                    function displayProfileWithBackground($profilePictureUrl, $backgroundPictureUrl, $isDefaultPicture)
+                    {
+                      echo '<div class="w-full bg-cover bg-no-repeat bg-center" style="height: 250px; background-image: url(\'' . $backgroundPictureUrl . '\');">';
+                      if (!$isDefaultPicture && !empty($profilePictureUrl)) {
+                        echo '<img src="' . $profilePictureUrl . '" alt="" class="opacity-0 w-full h-full" />';
+                      }
+                      echo '</div>';
+                    }
+
+                    displayProfileWithBackground($profilePictureUrl, $backgroundPictureUrl, empty($row['background_picture']));
+                    ?>
+
+>>>>>>> e4ae6338f48647867f40f1a3e076cebe4c71cd9b
                   </div>
 
                   <div class="p4">
@@ -295,51 +344,43 @@ if (empty($_SESSION['user_id'])) {
                         <div class="-mt-[70px] ml-4">
                           <div class="h-36 w-36 md rounded-full relative Profile picture">
                             <?php
-                            $defaultProfilePicture = $profilePicture; // Assuming $profilePicture contains the default picture URL
-                            
-                            // Check if the user is viewing another user's profile
+                            // Set the default profile picture
+                            $defaultProfilePicture = 'Images/user1.jpg';
+
                             if (isset($_GET['view_user_id'])) {
+                              // User is viewing another user's profile
                               $viewingUserId = $_GET['view_user_id'];
-
-                              // Retrieve profile picture and default_profile_picture for the user being viewed
-                              $sql = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $viewingUserId";
-                              $result = mysqli_query($conn, $sql) or die("query unsuccessful");
-
-                              if (mysqli_num_rows($result) > 0) {
-                                $row = mysqli_fetch_assoc($result);
-                                $profilePictureUrl = $row['profile_picture'];
-                                $isDefaultPicture = $row['default_profile_picture'];
-
-                                if (!$isDefaultPicture && !empty($profilePictureUrl)) {
-                                  echo '<img src="' . $profilePictureUrl . '" alt="" class="h-36 w-36 md rounded-full relative border-4 border-gray-900" />'; // Display default picture or user who is currently logged in
-                                } else {
-                                  echo '<img src="' . $defaultProfilePicture . '" alt="" class="h-36 w-36 md rounded-full relative border-4 border-gray-900" />'; // Display default picture if user not found
-                                }
-                              } else {
-                                echo '<img src="' . $defaultProfilePicture . '" alt="" class="h-36 w-36 md rounded-full relative border-4 border-gray-900" />'; // Display default picture if user not found
-                              }
                             } else {
                               // User is viewing their own profile
-                              $loggedInUserId = $_SESSION['user_id']; // Change this to the appropriate session variable for storing user ID
+                              $loggedInUserId = $_SESSION['user_id']; // Change to the appropriate session variable
                             
-                              // Retrieve profile picture and default_profile_picture for the logged-in user
-                              $sql = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $loggedInUserId";
-                              $result = mysqli_query($conn, $sql) or die("query unsuccessful");
-
-                              if (mysqli_num_rows($result) > 0) {
-                                $row = mysqli_fetch_assoc($result);
-                                $profilePictureUrl = $row['profile_picture'];
-                                $isDefaultPicture = $row['default_profile_picture'];
-
-                                if (!$isDefaultPicture && !empty($profilePictureUrl)) {
-                                  echo '<img src="' . $profilePictureUrl . '" alt="" class="h-36 w-36 md rounded-full relative border-4 border-gray-900" />'; // Display default picture or user who is currently logged in
-                                } else {
-                                  echo '<img src="' . $defaultProfilePicture . '" alt="" class="h-36 w-36 md rounded-full relative border-4 border-gray-900" />'; // Display default picture if user not found
-                                }
+                              if (isset($loggedInUserId)) {
+                                $viewingUserId = $loggedInUserId;
                               } else {
-                                echo '<img src="' . $defaultProfilePicture . '" alt="" class="h-36 w-36 md rounded-full relative border-4 border-gray-900" />'; // Display default picture if user not found
+                                // Handle the case when the user is not logged in or $_SESSION['user_id'] is not set
+                                // You may want to set a default user ID or take appropriate action here
                               }
                             }
+
+                            // Retrieve profile picture URL for the viewing user
+                            $sql = "SELECT profile_picture FROM users WHERE user_id = $viewingUserId";
+                            $result = mysqli_query($conn, $sql) or die("query unsuccessful");
+
+                            if ($row = mysqli_fetch_assoc($result)) {
+                              // User has a profile picture, display it
+                              $profilePictureUrl = $row['profile_picture'];
+                            } else {
+                              // User doesn't have a profile picture, use the default
+                              $profilePictureUrl = $defaultProfilePicture;
+                            }
+
+                            // If $profilePictureUrl is empty, set it to the default
+                            if (empty($profilePictureUrl)) {
+                              $profilePictureUrl = $defaultProfilePicture;
+                            }
+
+                            // Display the profile picture
+                            echo '<img src="' . $profilePictureUrl . '" alt="" class="h-36 w-36 md rounded-full relative border-4 border-gray-900" />';
                             ?>
                             <div class="absolute"></div>
                           </div>
@@ -394,9 +435,24 @@ if (empty($_SESSION['user_id'])) {
 
                       <!-- Description and others -->
                       <div class="mt-3">
-                        <p class="leading-tight mb-2">
-                          Designer Engineer / Web Developer kuno / Arist <br />
-                          <b>Single.</b>
+                        <p class="leading-tight mb-2 mr-5">
+                          <?php
+                          if (isset($_GET['view_user_id'])) {
+                            // Retrieve and display the bio for the user being viewed
+                            $viewingUserId = $_GET['view_user_id'];
+                            $sql = "SELECT bio FROM users WHERE user_id = $viewingUserId";
+                            $result = mysqli_query($conn, $sql) or die("Query unsuccessful");
+                            if (mysqli_num_rows($result) > 0) {
+                              $row = mysqli_fetch_assoc($result);
+                              echo $row['bio'];
+                            } else {
+                              echo "Bio not available"; // Display a default message if user not found
+                            }
+                          } else {
+                            // Display the bio of the currently logged-in user
+                            echo $_SESSION['bio'];
+                          }
+                          ?>
                         </p>
                         <div class="text-gray-600 flex">
                           <span class="flex mr-2"><svg viewBox="0 0 24 24" class="h-5 w-5 paint-icon">
@@ -410,7 +466,23 @@ if (empty($_SESSION['user_id'])) {
                               </g>
                             </svg>
                             <a href="https://www.facebook.com/FrtzRome/" target="#"
-                              class="leading-5 ml-1 text-blue-400">www.facebook.com/FrtzRome</a></span>
+                              class="leading-5 ml-1 text-blue-400"><?php
+                              if (isset($_GET['view_user_id'])) {
+                                // Retrieve and display the website for the user being viewed
+                                $viewingUserId = $_GET['view_user_id'];
+                                $sql = "SELECT website FROM users WHERE user_id = $viewingUserId";
+                                $result = mysqli_query($conn, $sql) or die("Query unsuccessful");
+                                if (mysqli_num_rows($result) > 0) {
+                                  $row = mysqli_fetch_assoc($result);
+                                  echo $row['website'];
+                                } else {
+                                  echo "Website not available"; // Display a default message if user not found
+                                }
+                              } else {
+                                // Display the website of the currently logged-in user
+                                echo $_SESSION['website'];
+                              }
+                              ?></a></span>
                           <span class="flex mr-2"><svg viewBox="0 0 24 24" class="h-5 w-5 paint-icon">
                               <g>
                                 <path
@@ -436,6 +508,30 @@ if (empty($_SESSION['user_id'])) {
                               // Output the formatted date
                               echo $formattedDate; ?>
                             </span></span>
+                        </div>
+                        <div class="">
+                          <span class="absolute -mt-1 text-xl material-symbols-rounded text-center">
+                            location_on
+                          </span>
+                          <p class="leading-tight ml-6 mb-2">
+                            <?php
+                            if (isset($_GET['view_user_id'])) {
+                              // Retrieve and display the location for the user being viewed
+                              $viewingUserId = $_GET['view_user_id'];
+                              $sql = "SELECT location FROM users WHERE user_id = $viewingUserId";
+                              $result = mysqli_query($conn, $sql) or die("Query unsuccessful");
+                              if (mysqli_num_rows($result) > 0) {
+                                $row = mysqli_fetch_assoc($result);
+                                echo $row['location'];
+                              } else {
+                                echo "Location not available"; // Display a default message if user not found
+                              }
+                            } else {
+                              // Display the location of the currently logged-in user
+                              echo $_SESSION['location'];
+                            }
+                            ?>
+                          </p>
                         </div>
                       </div>
                       <div class="pt-3 flex justify-start items-start w-full divide-x divide-gray-800 divide-solid">
@@ -505,32 +601,25 @@ if (empty($_SESSION['user_id'])) {
                       <div class="flex">
                         <div class="m-2 w-10 py-1">
                           <?php
-                          $defaultProfilePicture = $profilePicture; // Assuming $profilePicture contains the default picture URL
+                          $defaultProfilePicture = 'Images/user1.jpg'; // Set the default picture URL
                           
                           // Check if the user is logged in
                           if (isset($_SESSION['user_id'])) {
                             $loggedInUserId = $_SESSION['user_id']; // Change this to the appropriate session variable for storing user ID
                           
-                            // Retrieve profile picture and default_profile_picture for the logged-in user
-                            $sql = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $loggedInUserId";
-                            $result = mysqli_query($conn, $sql) or die("query unsuccessful");
+                            // Retrieve profile picture for the logged-in user
+                            $sql = "SELECT profile_picture FROM users WHERE user_id = $loggedInUserId";
+                            $result = mysqli_query($conn, $sql) or die("Query unsuccessful");
 
-                            if (mysqli_num_rows($result) > 0) {
-                              $row = mysqli_fetch_assoc($result);
-                              $profilePictureUrl = $row['profile_picture'];
-                              $isDefaultPicture = $row['default_profile_picture'];
+                            $row = mysqli_fetch_assoc($result);
 
-                              if (!$isDefaultPicture && !empty($profilePictureUrl)) {
-                                echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $profilePictureUrl . '" alt="#" />'; // Display default picture or user who is currently logged in
-                              } else {
-                                echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture if user not found
-                              }
-                            } else {
-                              echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture if user not found
-                            }
+                            // Get the user's profile picture URL, or use the default if empty or not found
+                            $profilePictureUrl = !empty($row['profile_picture']) ? $row['profile_picture'] : $defaultProfilePicture;
+
+                            echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $profilePictureUrl . '" alt="#" />'; // Display the user's profile picture or default picture
                           } else {
-                            // User is not logged in, display default picture
-                            echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />'; // Display default picture if user not found
+                            // Display the default picture for non-logged-in users
+                            echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="#" />';
                           }
                           ?>
                         </div>
@@ -540,7 +629,7 @@ if (empty($_SESSION['user_id'])) {
                           <textarea
                             class="bg-transparent font-medium text-lg w-full text-ellipsis border-0 focus:outline-none form-control text-gray-800 dark:text-gray-100 focus:ring-0 h-50"
                             autocomplete="off" name="text_post" id="textArea" cols="50" rows="3"
-                            placeholder="What's happening?"></textarea>
+                            placeholder="What's happening?" style="overflow: hidden;"></textarea>
                           <!--Image Prev-->
                           <div id="image-preview2" class="text-center mt-4 mr-4" style="display: none">
                             <img id="preview-image2"
@@ -605,6 +694,7 @@ if (empty($_SESSION['user_id'])) {
                         <span class="sr-only">Close modal</span>
                       </button>
                     </div>
+<<<<<<< HEAD
                     <!-- Modal body -->
                     <form id="form2" method="POST" action="" enctype="multipart/form-data">
                       <!-- User card-->
@@ -614,6 +704,60 @@ if (empty($_SESSION['user_id'])) {
                           <div class="w-full bg-cover bg-no-repeat bg-center"
                             style="height: 250px; background-image: url('Images/Profile BG.jpg');">
                             <img src="Images/Profile BG.jpg" alt="" class="opacity-0 w-full h-full" />
+=======
+                    <!-- Edit profile body -->
+                    <form method="POST" action="update_profile.php" enctype="multipart/form-data">
+                      <!--Edit user card-->
+                      <div class="text-gray-900 dark:text-gray-100">
+                        <div class="relative">
+                          <div class="brightness-50">
+                            <!--Background picture-->
+                            <?php
+
+                            $loggedInUserId = $_SESSION['user_id']; // Use the user_id from the session
+                            
+                            $sql = "SELECT background_picture FROM users WHERE user_id = $loggedInUserId";
+                            $result = mysqli_query($conn, $sql) or die("Query unsuccessful");
+
+                            $row = mysqli_fetch_assoc($result);
+                            // Check if the user already have a background picture or set to the default one ""Images/tokyo.jpg""
+                            $backgroundPictureUrl = !empty($row['background_picture']) ? $row['background_picture'] : "Images/tokyo.jpg";
+
+                            function displayBackgroundPicture($backgroundPictureUrl)
+                            {
+                              echo '<div class="w-full bg-cover bg-no-repeat bg-center" style="height: 250px; background-image: url(\'' . $backgroundPictureUrl . '\');"></div>';
+                            }
+
+                            displayBackgroundPicture($backgroundPictureUrl);
+                            ?>
+
+                          </div>
+
+                          <!-- Container for the buttons -->
+                          <div class="absolute inset-0 flex flex-row justify-center items-center gap-2">
+                            <!-- Input for changing background picture -->
+                            <div class="flex flex-col justify-center items-center">
+                              <input id="uploadBackground" type="file" class="form-control" name="background_picture"
+                                onchange="previewBackgroundImage()" />
+                              <!-- Button for uploading image -->
+                              <label for="uploadBackground"
+                                class="group flex items-center text-gray-200 p-3 text-base leading-6 font-medium rounded-full bg-opacity-25 bg-gray-700 hover:bg-opacity-50 hover:bg-gray-400">
+                                <span class="material-symbols-rounded">
+                                  add_a_photo
+                                </span>
+                              </label>
+                            </div>
+                            <!-- Button to remove background picture -->
+                            <div class="flex flex-col justify-center items-center">
+                              <button id="removeBackground"
+                                class="group flex items-center text-gray-200 p-3 text-base leading-6 font-medium rounded-full bg-opacity-25 bg-gray-700 hover:bg-opacity-50 hover:bg-gray-400"
+                                onclick="removeBackgroundImage()">
+                                <span class="material-symbols-rounded">
+                                  close
+                                </span>
+                              </button>
+                            </div>
+>>>>>>> e4ae6338f48647867f40f1a3e076cebe4c71cd9b
                           </div>
                         </div>
 
@@ -623,6 +767,7 @@ if (empty($_SESSION['user_id'])) {
                             <div class="flex flex-1">
                               <div class="-mt-[70px] ml-4">
                                 <div class="h-36 w-36 md rounded-full relative Profile picture">
+<<<<<<< HEAD
                                   <?php
                                   $defaultProfilePicture = $profilePicture; // Assuming $profilePicture contains the default picture URL
                                   
@@ -669,6 +814,51 @@ if (empty($_SESSION['user_id'])) {
                                       echo '<img src="' . $defaultProfilePicture . '" alt="" class="h-36 w-36 md rounded-full relative border-4 border-gray-900" />'; // Display default picture if user not found
                                     }
                                   }
+=======
+                                  <!--Input for change profile picture-->
+                                  <div class="absolute z-10 bottom-9 text-center p-1 my-2 mx-10 order-1 space-y-2">
+                                    <input id="profile_picture" type="file" class="form-control" name="profile_picture"
+                                      onchange="previewFile(2)" />
+                                    <!-- Button for uplaod image -->
+                                    <label for="profile_picture" href="#"
+                                      class="w-auto ml-1 group flex items-center text-gray-200 p-3 text-base leading-6 font-medium rounded-full bg-opacity-25 bg-gray-700 hover:bg-opacity-50 hover:bg-gray-400">
+                                      <span class="material-symbols-rounded">
+                                        add_a_photo
+                                      </span>
+                                    </label>
+                                  </div>
+                                  <!--Profile picture-->
+                                  <?php
+                                  // Set the default profile picture
+                                  $defaultProfilePicture = 'Images/user1.jpg';
+
+                                  if (isset($_SESSION['user_id'])) {
+                                    $loggedInUserId = $_SESSION['user_id'];
+
+                                    // Retrieve profile picture URL for the logged-in user
+                                    $sql = "SELECT profile_picture FROM users WHERE user_id = $loggedInUserId";
+                                    $result = mysqli_query($conn, $sql) or die("query unsuccessful");
+
+                                    if ($row = mysqli_fetch_assoc($result)) {
+                                      // User has a profile picture, display it
+                                      $profilePictureUrl = $row['profile_picture'];
+                                    } else {
+                                      // User doesn't have a profile picture, use the default
+                                      $profilePictureUrl = $defaultProfilePicture;
+                                    }
+                                  } else {
+                                    // Handle the case when the user is not logged in or $_SESSION['user_id'] is not set
+                                    // You may want to set a default user ID or take appropriate action here
+                                  }
+
+                                  // If $profilePictureUrl is empty, set it to the default
+                                  if (empty($profilePictureUrl)) {
+                                    $profilePictureUrl = $defaultProfilePicture;
+                                  }
+
+                                  // Display the profile picture
+                                  echo '<img src="' . $profilePictureUrl . '" alt="" class="brightness-50 h-36 w-36 md rounded-full relative border-4 border-gray-900" />';
+>>>>>>> e4ae6338f48647867f40f1a3e076cebe4c71cd9b
                                   ?>
                                   <div class="absolute"></div>
                                 </div>
@@ -677,13 +867,20 @@ if (empty($_SESSION['user_id'])) {
                             </div>
                             <!-- Edit Profile button -->
                             <div class="flex flex-col text-right">
+<<<<<<< HEAD
                               <button data-modal-target="profileform" data-modal-toggle="profileform" type="button"
                                 class="flex justify-center mt-2 mr-4 max-h-max whitespace-nowrap focus:outline-none focus:ring max-w-max border bg-transparent border-blue-500 text-blue-500 hover:border-blue-800 items-center hover:shadow-lg font-bold py-1 px-3 rounded-full mr-0 ml-auto">
+=======
+                              <button data-modal-target="profileform" data-modal-toggle="profileform" type="submit"
+                                name="submit"
+                                class="flex justify-center mt-2 mr-4 max-h-max whitespace-nowrap focus:outline-none focus:ring max-w-max border bg-transparent border-blue-500 text-blue-500 hover:text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-400 to-emerald-200 hover:border-blue-800 items-center hover:shadow-lg font-bold py-1 px-3 rounded-full mr-0 ml-auto">
+>>>>>>> e4ae6338f48647867f40f1a3e076cebe4c71cd9b
                                 Save changes
                               </button>
                             </div>
                           </div>
 
+<<<<<<< HEAD
                           <!-- Profile info -->
                           <div class="space-y-1 justify-center w-full mt-3 ml-3">
                             <!--Basic Information-->
@@ -805,6 +1002,167 @@ if (empty($_SESSION['user_id'])) {
                                   ツイッター
                                 </button>
                               </div>
+=======
+                          <!-- Change profile info -->
+                          <div class="space-y-1 justify-center w-full mt-5">
+                            <!--Change basic Information-->
+                            <div class="grid md:grid-cols-2 md:gap-6 mx-5">
+                              <!--First name-->
+                              <div class="relative z-0 w-full mb-6 group">
+                                <input type="text" name="ifirstname" id="ifirstname"
+                                  class="block py-2.5 px-0 w-full text-xl font-bold bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                  placeholder=" " value="<?php echo $_SESSION['ifirstname'] ?>" style="color: inherit;"
+                                  required />
+                                <label for="ifirstname"
+                                  class="absolute text-sm font-bold text-gray-400 -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500">First
+                                  name</label>
+                              </div>
+
+                              <!--Last name-->
+                              <div class="relative z-0 w-full mb-6 group">
+                                <input type="text" name="ilastname" id="ilastname"
+                                  class="block py-2.5 px-0 w-full text-xl font-bold bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                  placeholder=" " value="<?php echo $_SESSION['ilastname'] ?>" style="color: inherit;"
+                                  required />
+                                <label for="ilastname"
+                                  class="absolute text-sm font-bold text-gray-400 -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Last
+                                  name</label>
+                              </div>
+                            </div>
+
+                            <!--Bio-->
+                            <div class="mx-5">
+                              <div class="relative z-0 w-full mb-6 group">
+                                <textarea name="bio" id="bio"
+                                  class="block py-2.5 px-0 w-full text-xl font-bold bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                  placeholder=" " style="color: inherit; overflow: hidden;"
+                                  required><?php echo $_SESSION['bio'] ?></textarea>
+                                <label for="bio"
+                                  class="absolute text-sm font-bold text-gray-400 -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Bio
+                                </label>
+                              </div>
+
+                              <!--Location-->
+                              <div class="relative z-0 w-full mb-6 group">
+                                <input type="text" name="location" id="location"
+                                  class="block py-2.5 px-0 w-full text-xl font-bold bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                  placeholder=" " value="<?php echo $_SESSION['location'] ?>" style="color: inherit;"
+                                  required />
+                                <label for="location"
+                                  class="absolute text-sm font-bold text-gray-400 -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Location
+                                </label>
+                              </div>
+
+                              <!--Website-->
+                              <div class="relative z-0 w-full mb-6 group">
+                                <input type="text" name="website" id="website"
+                                  class="block py-2.5 px-0 w-full text-xl font-bold bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                  placeholder=" " value="<?php echo $_SESSION['website'] ?>" style="color: inherit;"
+                                  required />
+                                <label for="website"
+                                  class="absolute text-sm font-bold text-gray-400 -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Website
+                                </label>
+                              </div>
+
+                              <!--Birthday-->
+                              <div class="my-10 -ml-2 content-center">
+                                <div class="grid grid-cols-3">
+                                  <label
+                                    class="absolute scale-75 -mt-8 text-sm font-bold text-gray-400 tracking-wide dark:text-gray-300">Birthday</label>
+                                </div>
+                                <div class="flex">
+                                  <select
+                                    class="form-control w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500 dark:bg-[#28282B] dark:border-gray-600"
+                                    id="grid-state" type="text" name="ibirth_month" id="ibirth_month"
+                                    value="<?php echo $_SESSION['ibirth_month'] ?>">
+                                    <option disabled selected>Month</option>
+                                    <option>January</option>
+                                    <option>February</option>
+                                    <option>March</option>
+                                    <option>April</option>
+                                    <option>May</option>
+                                    <option>June</option>
+                                    <option>July</option>
+                                    <option>August</option>
+                                    <option>September</option>
+                                    <option>October</option>
+                                    <option>November</option>
+                                    <option>December</option>
+                                  </select>
+
+                                  <select
+                                    class="form-control w-full text-base px-4 py-2 mx-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500 dark:bg-[#28282B] dark:border-gray-600"
+                                    id="grid-state" type="number" name="ibirth_day" id="ibirth_day"
+                                    value="<?php echo $_SESSION['ibirth_day'] ?>">
+                                    <option disabled selected>Day</option>
+                                    <option>01</option>
+                                    <option>02</option>
+                                    <option>03</option>
+                                    <option>04</option>
+                                    <option>05</option>
+                                    <option>06</option>
+                                    <option>07</option>
+                                    <option>08</option>
+                                    <option>09</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                    <option>13</option>
+                                    <option>14</option>
+                                    <option>15</option>
+                                    <option>16</option>
+                                    <option>17</option>
+                                    <option>18</option>
+                                    <option>19</option>
+                                    <option>20</option>
+                                    <option>21</option>
+                                    <option>22</option>
+                                    <option>23</option>
+                                    <option>24</option>
+                                    <option>25</option>
+                                    <option>26</option>
+                                    <option>27</option>
+                                    <option>28</option>
+                                    <option>29</option>
+                                    <option>30</option>
+                                    <option>31</option>
+                                  </select>
+
+                                  <select
+                                    class="form-control w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500 dark:bg-[#28282B] dark:border-gray-600"
+                                    id="grid-state" type="number" name="ibirth_year" id="ibirth_year"
+                                    value="<?php echo $_SESSION['ibirth_year'] ?>">
+                                    <option disabled selected>Year</option>
+                                    <option>2023</option>
+                                    <option>2022</option>
+                                    <option>2021</option>
+                                    <option>2020</option>
+                                    <option>2019</option>
+                                    <option>2018</option>
+                                    <option>2017</option>
+                                    <option>2016</option>
+                                    <option>2015</option>
+                                    <option>2014</option>
+                                    <option>2013</option>
+                                    <option>2012</option>
+                                    <option>2011</option>
+                                    <option>2010</option>
+                                    <option>2009</option>
+                                    <option>2008</option>
+                                    <option>2007</option>
+                                    <option>2006</option>
+                                    <option>2005</option>
+                                    <option>2004</option>
+                                    <option>2003</option>
+                                    <option>2002</option>
+                                    <option>2001</option>
+                                    <option>2000</option>
+                                    <option>1999</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="h-1"></div>
+>>>>>>> e4ae6338f48647867f40f1a3e076cebe4c71cd9b
                             </div>
                           </div>
                         </div>
@@ -857,49 +1215,36 @@ if (empty($_SESSION['user_id'])) {
                       <div class="flex flex-shrink-0 p-4 pb-0">
                         <a href="#" class="flex-shrink-0 group block">
                           <div class="flex items-center">
+
+                            <!--Profile pciture-->
                             <div>
                               <?php
-                              $defaultProfilePicture = $profilePicture; // Assuming $profilePicture contains the default picture URL
-                            
+                              // Set the default profile picture
+                              $defaultProfilePicture = 'Images/user1.jpg';
+
+                              // Determine the viewing user ID
                               if (isset($_GET['view_user_id'])) {
                                 $viewingUserId = $_GET['view_user_id'];
-
-                                // Retrieve profile picture and default_profile_picture for the user being viewed
-                                $sql = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $viewingUserId";
-                                $result = mysqli_query($conn, $sql) or die("query unsuccessful");
-
-                                if (mysqli_num_rows($result) > 0) {
-                                  $row = mysqli_fetch_assoc($result);
-                                  $profilePictureUrl = $row['profile_picture'];
-                                  $isDefaultPicture = $row['default_profile_picture'];
-
-                                  $postProfilePicture = (!$isDefaultPicture && !empty($profilePictureUrl)) ? $profilePictureUrl : $defaultProfilePicture;
-
-                                  echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $postProfilePicture . '" alt="" />';
-                                } else {
-                                  echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="" />'; // Display default picture if user not found
-                                }
+                              } else if (isset($_SESSION['user_id'])) {
+                                $viewingUserId = $_SESSION['user_id'];
                               } else {
-                                // User is viewing their own profile
-                                $loggedInUserId = $_SESSION['user_id']; // Change this to the appropriate session variable for storing user ID
-                            
-                                // Retrieve profile picture and default_profile_picture for the logged-in user
-                                $sql = "SELECT profile_picture, default_profile_picture FROM users WHERE user_id = $loggedInUserId";
-                                $result = mysqli_query($conn, $sql) or die("query unsuccessful");
-
-                                if (mysqli_num_rows($result) > 0) {
-                                  $row = mysqli_fetch_assoc($result);
-                                  $profilePictureUrl = $row['profile_picture'];
-                                  $isDefaultPicture = $row['default_profile_picture'];
-
-                                  $postProfilePicture = (!$isDefaultPicture && !empty($profilePictureUrl)) ? $profilePictureUrl : $defaultProfilePicture;
-
-                                  echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $postProfilePicture . '" alt="" />';
-                                } else {
-                                  echo '<img class="inline-block h-10 w-10 rounded-full" src="' . $defaultProfilePicture . '" alt="" />'; // Display default picture if user not found
-                                }
+                                // Handle the case when the user is not logged in or $_SESSION['user_id'] is not set
+                                // You may want to set a default user ID or take appropriate action here
+                                $viewingUserId = null; // Set to a default or handle as needed
                               }
+
+                              // Retrieve profile picture URL for the viewing user
+                              $sql = "SELECT profile_picture FROM users WHERE user_id = $viewingUserId";
+                              $result = mysqli_query($conn, $sql) or die("Query unsuccessful");
+
+                              // Fetch the profile picture URL
+                              $row = mysqli_fetch_assoc($result);
+                              $profilePictureUrl = ($row && !empty($row['profile_picture'])) ? $row['profile_picture'] : $defaultProfilePicture;
+
+                              // Display the profile picture
+                              echo '<img src="' . $profilePictureUrl . '" alt="" class="inline-block h-10 w-10 rounded-full" />';
                               ?>
+
 
                             </div>
 
@@ -915,7 +1260,11 @@ if (empty($_SESSION['user_id'])) {
                                   $result = mysqli_query($conn, $sql) or die("query unsuccessful");
                                   if (mysqli_num_rows($result) > 0) {
                                     $row = mysqli_fetch_assoc($result);
+                                    $emailParts = explode('@', $row['iUserEmail']);
+                                    $username = $emailParts[0]; // Get the username before '@gmail.com'
+                              
                                     echo $row['ifirstname'] . ' ' . $row['ilastname'];
+<<<<<<< HEAD
                                     ?>
                                     <span
                                       class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
@@ -946,11 +1295,41 @@ if (empty($_SESSION['user_id'])) {
                                     ?>
                                   </span>
                                   <?php
+=======
+
+                                    echo ' <span class="text-sm leading-5 font-medium text-gray-400 hover:text-gray-300 transition ease-in-out duration-150">@';
+                                    echo $username; // Display the username
+                                    echo '</span>';
+
+                                    $postCreated = strtotime($fetch['post_created']); // Convert to timestamp
+                                    $timePosted = strtotime($fetch['time_posted']); // Convert to timestamp
+                                    echo ' <span class="text-sm leading-5 font-medium text-gray-400 hover:text-gray-300 transition ease-in-out duration-150">';
+                                    echo date('F j, Y', $postCreated) . ' ' . date('g:i A', $timePosted);
+                                    echo '</span>';
+                                  }
+                                } else {
+                                  $emailParts = explode('@', $_SESSION['iUserEmail']);
+                                  $username = $emailParts[0]; // Get the username before '@gmail.com'
+                              
+                                  echo $_SESSION['ifirstname'] . ' ' . $_SESSION['ilastname'];
+
+                                  // Display the username
+                                  echo ' <span class="text-sm leading-5 font-medium text-gray-400 hover:text-gray-300 transition ease-in-out duration-150">@';
+                                  echo $username;
+                                  echo '</span>';
+
+                                  $postCreated = strtotime($fetch['post_created']); // Convert to timestamp
+                                  $timePosted = strtotime($fetch['time_posted']); // Convert to timestamp
+                                  echo ' <span class="text-sm leading-5 font-medium text-gray-400 hover:text-gray-300 transition ease-in-out duration-150">';
+                                  echo date('F j, Y', $postCreated) . ' ' . date('g:i A', $timePosted);
+                                  echo '</span>';
+>>>>>>> e4ae6338f48647867f40f1a3e076cebe4c71cd9b
                                 }
                                 ?>
                               </p>
 
                             </div>
+
 
                           </div>
                         </a>
@@ -1033,8 +1412,6 @@ if (empty($_SESSION['user_id'])) {
                             </button>
                           <?php } ?>
                         </div>
-
-
                       </div>
                       <hr class="border-gray-900 dark:border-gray-400" />
                     </article>
