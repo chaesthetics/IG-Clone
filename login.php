@@ -3,6 +3,8 @@
 session_start();
 include 'config.php';
 
+$promtMessage = '';
+
 if (isset($_POST['signin'])) {
 
   $iUserEmail = $_POST['iUserEmail'];
@@ -21,17 +23,53 @@ if (isset($_POST['signin'])) {
     $_SESSION["ibirth_month"] = $row['ibirth_month'];
     $_SESSION["ibirth_day"] = $row['ibirth_day'];
     $_SESSION["ibirth_year"] = $row['ibirth_year'];
+    $_SESSION["date_created"] = $row['date_created'];
+    $_SESSION["profile_picture"] = $row['profile_picture'];
+    $_SESSION["background_picture"] = $row['background_picture'];
+    $_SESSION["default_background_picture"] = $row['default_background_picture'];
+    $_SESSION["bio"] = $row['bio'];
+    $_SESSION["location"] = $row['location'];
+    $_SESSION["website"] = $row['website'];
 
   } else {
-    echo '<script type="text/javascript">';
-    echo 'alert("Invalid username and password");';
-    echo 'window.location.href = "login.php"';
-    echo '</script>';
+    $promtMessage = '<div
+  id="alert-5"
+  class="flex items-center p-4 rounded-lg bg-red-200 mb-5"
+  role="alert"
+>
+  <span class="material-symbols-rounded text-red-500"> priority_high </span>
+  <div class="mx-3 text-sm font-medium text-red-500">
+    Incorect Username or password.
+  </div>
+  <button
+    type="button"
+    class="ml-auto -mx-1.5 -my-1.5 bg-indigo-200 text-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 p-1.5 hover:bg-gray-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800  dark:hover:bg-gray-700 dark:hover:text-white"
+    data-dismiss-target="#alert-5"
+    aria-label="Close"
+  >
+    <span class="sr-only">Dismiss</span>
+    <svg
+      class="w-3 h-3"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 14 14"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+      />
+    </svg>
+  </button>
+</div>';
   }
 }
 
 if (isset($_SESSION["iUserEmail"])) {
-  header("location: index.php");
+  header("location: index.php"); // Redirect user to the home page
 }
 
 ?>
@@ -93,7 +131,9 @@ if (isset($_SESSION["iUserEmail"])) {
             Please sign in to your account
           </p>
         </div>
-
+        <?php if (!empty($promtMessage)): ?>
+          <?php echo $promtMessage ?>
+        <?php endif; ?>
         <form class="mt-8 space-y-6" action="login.php" method="post">
 
           <input type="hidden" name="remember" />

@@ -1,8 +1,10 @@
 <?php
-//Create connection 
+// Create connection 
 include 'config.php';
 
-//Add User 
+$promtMessage = '';
+
+// Add User 
 if (isset($_POST['submit'])) {
   if (
     isset($_POST['ifirstname']) && isset($_POST['ilastname']) &&
@@ -17,40 +19,6 @@ if (isset($_POST['submit'])) {
     $ibirth_year = $_POST['ibirth_year'];
     $iUserEmail = $_POST['iUserEmail'];
     $iUserPassword = $_POST['iUserPassword'];
-
-    $promtMessage = '<div
-  id="alert-3"
-  class="flex items-center p-4 text-green-800 rounded-lg bg-green-50 mb-5"
-  role="alert"
->
-  <span class="material-symbols-rounded"> check_circle </span>
-  <div class="ml-3 text-sm font-medium">
-    Account successfully created
-  </div>
-  <button
-    type="button"
-    class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
-    data-dismiss-target="#alert-3"
-    aria-label="Close"
-  >
-    <span class="sr-only">Close</span>
-    <svg
-      class="w-3 h-3"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 14 14"
-    >
-      <path
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-      />
-    </svg>
-  </button>
-</div>';
 
     // Check if the iUserEmail already exists in the database
     $checkEmailQuery = "SELECT * FROM users WHERE iUserEmail = '$iUserEmail'";
@@ -91,10 +59,53 @@ if (isset($_POST['submit'])) {
   </button>
 </div>';
     } else {
-      $sql = "INSERT INTO users(ifirstname, ilastname, ibirth_month, ibirth_day, ibirth_year, iUserEmail, iUserPassword) VALUES('$ifirstname', '$ilastname', '$ibirth_month', '$ibirth_day', '$ibirth_year', '$iUserEmail', '$iUserPassword')";
+      $date_created = date("Y-m-d H:i:s"); // Current date and time
+      $sql = "INSERT INTO users(ifirstname, ilastname, ibirth_month, ibirth_day, ibirth_year, iUserEmail, iUserPassword, date_created) 
+            VALUES('$ifirstname', '$ilastname', '$ibirth_month', '$ibirth_day', '$ibirth_year', '$iUserEmail', '$iUserPassword', '$date_created')";
       $result = mysqli_query($conn, $sql) or die("query unsuccessful");
+
+      // Set a default profile picture for the new user
+      $user_id = mysqli_insert_id($conn); // Get the ID of the newly inserted user
+      $defaultProfilePicture = 'Images/user1.jpg';
+      $updateProfilePictureQuery = "UPDATE users SET profile_picture = '$defaultProfilePicture' WHERE user_id = $user_id ";
+      mysqli_query($conn, $updateProfilePictureQuery);
+
+      $promtMessage = '<div
+  id="alert-3"
+  class="flex items-center p-4 text-green-800 rounded-lg bg-green-50 mb-5"
+  role="alert"
+>
+  <span class="material-symbols-rounded"> check_circle </span>
+  <div class="ml-3 text-sm font-medium">
+    Account successfully created
+  </div>
+  <button
+    type="button"
+    class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
+    data-dismiss-target="#alert-3"
+    aria-label="Close"
+  >
+    <span class="sr-only">Close</span>
+    <svg
+      class="w-3 h-3"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 14 14"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+      />
+    </svg>
+  </button>
+</div>';
     }
   } else {
+    // Handle missing information case
     $promtMessage = '<div
   id="alert-5"
   class="flex items-center p-4 rounded-lg bg-indigo-200 mb-5"
@@ -137,40 +148,6 @@ if (isset($_POST['submit'])) {
   $ibirth_year = '';
   $iUserEmail = '';
   $iUserPassword = '';
-
-  $promtMessage = '<div
-  id="alert-5"
-  class="flex items-center p-4 rounded-lg bg-indigo-200 mb-5"
-  role="alert"
->
-  <span class="material-symbols-rounded"> priority_high </span>
-  <div class="ml-3 text-sm font-medium text-indigo-800 ">
-    All information is required
-  </div>
-  <button
-    type="button"
-    class="ml-auto -mx-1.5 -my-1.5 bg-indigo-200 text-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 p-1.5 hover:bg-gray-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800  dark:hover:bg-gray-700 dark:hover:text-white"
-    data-dismiss-target="#alert-5"
-    aria-label="Close"
-  >
-    <span class="sr-only">Dismiss</span>
-    <svg
-      class="w-3 h-3"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 14 14"
-    >
-      <path
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-      />
-    </svg>
-  </button>
-</div>';
 }
 ?>
 
@@ -233,7 +210,9 @@ if (isset($_POST['submit'])) {
         <form class="mt-8 space-y-6" action="signup.php" method="post">
           <input class="form-control" type="hidden" name="remember" />
           <div class="mt-8 content-center">
-            <?php echo $promtMessage ?>
+            <?php if (!empty($promtMessage)): ?>
+              <?php echo $promtMessage ?>
+            <?php endif; ?>
             <label class="ml-3 text-sm font-bold text-gray-700 tracking-wide">First Name</label>
             <label class="ml-[150px] text-sm font-bold text-gray-700 tracking-wide">Last Name</label>
             <div class="flex">
